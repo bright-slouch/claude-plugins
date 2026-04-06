@@ -4,7 +4,11 @@
 
 This plugin provides a comprehensive AI skill suite for residential real estate agents operating in Central Indiana within the MIBOR/BLC territory. It covers the full buying and selling lifecycle — from initial client consultations through closing — and is designed to serve multiple agents via personalized config files.
 
-**19 skills + orchestrator — all phases complete (Phase 0–5).** Skills sit directly in `~/Skills/real-estate-plugin/` (flat structure, no `skills/` subdirectory). The orchestrator is an agent at `agents/orchestrator.md`. A SKILL.md stub for the orchestrator lives at `orchestrator/SKILL.md`.
+**18 skills + orchestrator — all phases complete (Phase 0–5).** Plugin follows standard Claude Code plugin conventions:
+- **Skills** live in `skills/` (e.g., `skills/re-cma/SKILL.md`)
+- **Commands** (slash commands) live in `commands/` (e.g., `commands/re-cma.md`)
+- **Agents** live in `agents/` (e.g., `agents/orchestrator.md`)
+- A SKILL.md stub for the orchestrator lives at `orchestrator/SKILL.md`.
 
 ---
 
@@ -120,7 +124,7 @@ Presentation and document templates live in:
 
 ---
 
-## Skill Catalog (19 Skills)
+## Skill Catalog (18 Skills)
 
 ### Foundation
 | Skill | Description |
@@ -187,10 +191,40 @@ The orchestrator uses the `real-estate-plugin:skill-name` prefix format in its f
 
 ---
 
+## Plugin Directory Layout
+
+```
+real-estate-plugin/
+├── .claude-plugin/plugin.json   # Plugin manifest
+├── settings.json                # Default agent setting
+├── skills/                      # All 18 skills (auto-discovered by plugin system)
+│   ├── re-agent-setup/SKILL.md
+│   ├── re-cma/SKILL.md
+│   ├── re-buyer-consultation/SKILL.md
+│   └── ... (18 total)
+├── commands/                    # Slash commands (one per skill)
+│   ├── re-agent-setup.md
+│   ├── re-cma.md
+│   └── ... (18 total)
+├── agents/                      # Agent definitions
+│   └── orchestrator.md
+├── orchestrator/                # Orchestrator SKILL.md stub
+│   └── SKILL.md
+├── config/                      # Per-agent config files
+│   ├── _template/
+│   └── [agent-slug]/
+├── references/                  # Shared Indiana-specific references
+└── templates/                   # Shared document templates
+```
+
+---
+
 ## Skill Development Conventions
 
 - **Step 1 of every skill:** "Load Agent Config" — read `agent-profile.yaml` + any other needed configs. If not found, direct to `re-agent-setup`.
 - **SKILL.md line limit:** 500 lines maximum. Extract heavy content to each skill's own `references/` subdirectory and link.
+- **Skill location:** All skills live in `skills/[skill-name]/SKILL.md`
+- **Command location:** All slash commands live in `commands/[skill-name].md`
 - **Config paths:** Always use `~/Skills/real-estate-plugin/config/[slug]/[file].yaml`
 - **Reference paths:** Always use `~/Skills/real-estate-plugin/references/[file].md`
 - **Template paths:** Always use `~/Skills/real-estate-plugin/templates/[file].md`

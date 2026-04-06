@@ -6,7 +6,7 @@ A comprehensive AI skill suite for residential real estate agents in Central Ind
 
 ## What This Plugin Does
 
-19 skills covering every stage of a real estate transaction:
+18 skills covering every stage of a real estate transaction:
 
 - **Set up your profile** — one-time config that personalizes every skill to your voice, brand, market areas, and vendor network
 - **Win listings** — seller consultation prep, CMA, pricing strategy, net sheets
@@ -33,15 +33,25 @@ Residential real estate agents who:
 
 ## Installation
 
-1. **Clone or copy** this plugin into `~/Skills/real-estate-plugin/`
+### Option A: Clone from GitHub
+```
+git clone <repo-url> ~/Skills/real-estate-plugin
+```
 
-2. **Set up your agent profile** — run the setup skill:
+### Option B: Download ZIP
+1. Download the ZIP file from GitHub
+2. Unzip and rename the folder to `real-estate-plugin` (remove any `-main` suffix)
+3. Open Claude Desktop → **Settings → Plugins** → add the `real-estate-plugin` folder
+
+### First-Time Setup
+
+1. **Set up your agent profile** — run the setup command:
    ```
    /re-agent-setup
    ```
    This walks you through creating your personalized config (takes 15-20 minutes for a full setup, less if you skip optional sections).
 
-3. **Start using skills** — invoke any skill by name:
+2. **Start using skills** — invoke any skill by slash command:
    ```
    /re-seller-consultation
    /re-cma
@@ -49,7 +59,7 @@ Residential real estate agents who:
    ```
    Or start the orchestrator and describe what you need in plain language.
 
-4. **(Optional) Connect Monday.com** — if you manage multiple agents or want a centralized registry, set up the "Real Estate Agent Registry" board in Monday.com and add your `MONDAY_API_KEY` to `~/.zshrc`.
+3. **(Optional) Connect Monday.com** — if you manage multiple agents or want a centralized registry, set up the "Real Estate Agent Registry" board in Monday.com and add your `MONDAY_API_KEY` to `~/.zshrc`.
 
 ---
 
