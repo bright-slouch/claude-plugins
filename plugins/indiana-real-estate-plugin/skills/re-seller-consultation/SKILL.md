@@ -192,7 +192,7 @@ If seller has a hard deadline (e.g., job relocation close in 45 days): work back
 
 ### Step 7: Seller Net Sheet Estimate
 
-Populate `~/Skills/real-estate-plugin/templates/seller-net-sheet.md` using:
+Populate `templates/seller-net-sheet.md` using:
 - Sale price: provided by agent or from pricing strategy recommendation
 - `fee-structure.yaml`: listing commission, buyer agent compensation if offered, admin fee
 - Indiana closing cost norms: seller typically pays owner's title insurance, settlement/closing fee, title search, recording
@@ -203,14 +203,14 @@ Populate `~/Skills/real-estate-plugin/templates/seller-net-sheet.md` using:
 
 Flag clearly: "This is an estimate only. Actual figures are determined at closing by the title company."
 
-For full net sheet template, reference `~/Skills/real-estate-plugin/templates/seller-net-sheet.md`.
+For full net sheet template, reference `templates/seller-net-sheet.md`.
 
 ---
 
 ### Step 8: Output and Consultation Summary
 
 Produce:
-1. **Personalized listing presentation** — populate `~/Skills/real-estate-plugin/templates/listing-presentation.md` with agent config data and market data provided
+1. **Personalized listing presentation** — populate `templates/listing-presentation.md` with agent config data and market data provided
 2. **Consultation summary** with seller's stated goals, pricing recommendation, timeline milestones, and next steps
 3. **Net sheet estimate** at the recommended price point
 4. **Follow-up email draft** if requested, using `email-templates.yaml`
@@ -239,9 +239,9 @@ Always close with the legal disclaimer.
 - `config/[slug]/fee-structure.yaml` — commission, admin fee, buyer comp defaults
 - `config/[slug]/email-templates.yaml` — follow-up email signature and templates
 - `config/[slug]/market-areas.yaml` — geographic context
-- `~/Skills/real-estate-plugin/templates/listing-presentation.md`
-- `~/Skills/real-estate-plugin/templates/seller-net-sheet.md`
-- `~/Skills/real-estate-plugin/references/indiana-agency-law.md`
+- `templates/listing-presentation.md`
+- `templates/seller-net-sheet.md`
+- `references/indiana-agency-law.md`
 - `re-seller-consultation/references/consultation-framework.md`
 
 ### Works With

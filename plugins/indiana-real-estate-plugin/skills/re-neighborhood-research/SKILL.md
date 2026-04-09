@@ -59,9 +59,9 @@ You turn raw research into a polished, buyer-ready report that makes the agent l
 
 Load the following config files before producing any output:
 
-- `~/Skills/real-estate-plugin/config/[slug]/agent-profile.yaml` — voice, tone, brand identity. **Always load first.**
-- `~/Skills/real-estate-plugin/config/[slug]/market-areas.yaml` — which areas the agent knows well; flag if the requested area is outside the agent's primary territory
-- `~/Skills/real-estate-plugin/config/[slug]/brand-kit.yaml` — colors, tagline, hashtags, compliance disclaimer for branded report header/footer
+- `config/[slug]/agent-profile.yaml` — voice, tone, brand identity. **Always load first.**
+- `config/[slug]/market-areas.yaml` — which areas the agent knows well; flag if the requested area is outside the agent's primary territory
+- `config/[slug]/brand-kit.yaml` — colors, tagline, hashtags, compliance disclaimer for branded report header/footer
 
 If no agent config is found, direct the user to run `/re-agent-setup` before proceeding.
 
@@ -101,7 +101,7 @@ Establish buyer priorities before building the report. Ask if not provided:
 
 **Key district lookup rule:** School districts in Central Indiana do NOT follow city boundary lines. A home in "the City of Carmel" could be in Carmel Clay Schools, Hamilton Southeastern Schools, or Westfield-Washington Schools depending on its precise location. Always verify via the district's address lookup tool or the county assessor.
 
-**Reference:** `~/Skills/real-estate-plugin/re-neighborhood-research/references/central-indiana-school-districts.md`
+**Reference:** `skills/re-neighborhood-research/references/central-indiana-school-districts.md`
 
 ---
 
@@ -124,7 +124,7 @@ Estimated annual tax at 1.5% effective rate: ~$3,950
 (Verify with Hamilton County Auditor — rates vary by exact location and taxing district)
 ```
 
-**Reference:** `~/Skills/real-estate-plugin/re-neighborhood-research/references/indiana-tax-system.md`
+**Reference:** `skills/re-neighborhood-research/references/indiana-tax-system.md`
 
 **Township note:** Indiana has township assessors in some counties and county assessors in others. Some services (fire protection, poor relief, cemeteries) are funded at the township level — this can affect total tax rate in unincorporated areas. Explain this when relevant (rural Hendricks, Johnson, or Shelby County properties).
 
@@ -236,7 +236,7 @@ Properties on well and septic (common in rural Hendricks, Johnson, Shelby, Morga
 
 ### Step 9: Local Context and Amenities
 
-Draw from `~/Skills/real-estate-plugin/config/[slug]/market-areas.yaml` and `~/Skills/real-estate-plugin/references/central-indiana-market-context.md` to add authentic local color.
+Draw from `config/[slug]/market-areas.yaml` and `references/central-indiana-market-context.md` to add authentic local color.
 
 **Standard amenity categories:**
 - Trails and parks: Monon Trail (runs through Carmel/Westfield/Broad Ripple), Nickel Plate Trail (Noblesville/Fishers), White River Greenway, Eagle Creek Park, Morse Reservoir, Geist Reservoir
@@ -300,7 +300,7 @@ Instagram/Facebook teaser. 150-200 words. Lead with one compelling local fact. E
 - Price range data from MLS
 - General character descriptors tied to physical features ("historic bungalows," "new construction," "walkable to downtown")
 
-**Reference:** `~/Skills/real-estate-plugin/references/real-estate-vocabulary.md` for approved language.
+**Reference:** `references/real-estate-vocabulary.md` for approved language.
 
 If a buyer directly asks about neighborhood demographics, respond: "Fair housing laws require that I focus on property features and neighborhood amenities rather than demographic data. I'd encourage you to visit the area at different times of day to get a feel for it. I'm happy to share school performance data, commute information, or local amenities."
 
@@ -328,10 +328,10 @@ If a buyer directly asks about neighborhood demographics, respond: "Fair housing
 - `market-areas.yaml` — local knowledge, farm area notes
 
 ### Reference Files Used
-- `~/Skills/real-estate-plugin/re-neighborhood-research/references/central-indiana-school-districts.md`
-- `~/Skills/real-estate-plugin/re-neighborhood-research/references/indiana-tax-system.md`
-- `~/Skills/real-estate-plugin/references/central-indiana-market-context.md`
-- `~/Skills/real-estate-plugin/references/real-estate-vocabulary.md`
+- `skills/re-neighborhood-research/references/central-indiana-school-districts.md`
+- `skills/re-neighborhood-research/references/indiana-tax-system.md`
+- `references/central-indiana-market-context.md`
+- `references/real-estate-vocabulary.md`
 
 ### Related Skills
 - `/re-buyer-consultation` — feeds buyer profile and priority list into this skill
@@ -340,7 +340,7 @@ If a buyer directly asks about neighborhood demographics, respond: "Fair housing
 - `/re-offer-writer` — neighborhood report becomes supporting context when writing the offer
 
 ### Example Prompts
-See `~/Skills/real-estate-plugin/re-neighborhood-research/examples/example-prompts.md`
+See `skills/re-neighborhood-research/examples/example-prompts.md`
 
 ---
 

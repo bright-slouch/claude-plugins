@@ -2,7 +2,7 @@
 # Testing protocol based on dependency hierarchy
 # Run tests in tier order — higher tiers depend on lower tiers passing
 
-plugin_root: "~/Skills/real-estate-plugin"
+plugin_root: "."
 
 # =============================================================================
 # TESTING ORDER (Dependency-Based)

@@ -469,4 +469,4 @@ All market reports must comply with the Fair Housing Act. Specific requirements:
   based on anything other than the buyer's stated preferences, budget, and
   practical requirements.
 - For full language guidance, see
-  `~/Skills/real-estate-plugin/references/real-estate-vocabulary.md`.
+  `references/real-estate-vocabulary.md`.

@@ -175,7 +175,7 @@ If they're firm: Acknowledge it, review what happens next with earnest money (pe
 
 ## Fair Housing Language — Top 10 Words and Phrases to Avoid
 
-Cross-reference with `~/Skills/real-estate-plugin/references/real-estate-vocabulary.md` for the full list. These are the highest-frequency violations:
+Cross-reference with `references/real-estate-vocabulary.md` for the full list. These are the highest-frequency violations:
 
 | Phrase to Avoid | Why It's a Problem | Use Instead |
 |---|---|---|

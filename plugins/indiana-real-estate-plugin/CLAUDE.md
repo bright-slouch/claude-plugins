@@ -18,7 +18,7 @@ Every agent-specific detail lives in YAML config files — never hardcoded. The 
 
 ### Config Location
 ```
-~/Skills/real-estate-plugin/config/[agent-slug]/
+config/[agent-slug]/
 ```
 
 Each agent has up to 7 config files:
@@ -32,7 +32,7 @@ Each agent has up to 7 config files:
 | `email-templates.yaml` | Signature block, per-milestone email templates |
 | `team-structure.yaml` | Team members, roles, TC contact, showing assistant |
 
-Templates for all 7 files are in `~/Skills/real-estate-plugin/config/_template/`.
+Templates for all 7 files are in `config/_template/`.
 
 ### Agent Identification Pattern
 
@@ -87,7 +87,7 @@ config/jane-smith-fc-tucker/
 
 Shared Indiana-specific legal, market, and practice references live in:
 ```
-~/Skills/real-estate-plugin/references/
+references/
 ```
 
 | File | Contains |
@@ -109,7 +109,7 @@ All skills should reference these files for Indiana-specific content rather than
 
 Presentation and document templates live in:
 ```
-~/Skills/real-estate-plugin/templates/
+templates/
 ```
 
 | File | Used By |
@@ -226,9 +226,9 @@ real-estate-plugin/
 - **SKILL.md line limit:** 500 lines maximum. Extract heavy content to each skill's own `references/` subdirectory and link.
 - **Skill location:** All skills live in `skills/[skill-name]/SKILL.md`
 - **Command location:** All slash commands live in `commands/[skill-name].md`
-- **Config paths:** Always use `~/Skills/real-estate-plugin/config/[slug]/[file].yaml`
-- **Reference paths:** Always use `~/Skills/real-estate-plugin/references/[file].md`
-- **Template paths:** Always use `~/Skills/real-estate-plugin/templates/[file].md`
+- **Config paths:** Always use `config/[slug]/[file].yaml`
+- **Reference paths:** Always use `references/[file].md`
+- **Template paths:** Always use `templates/[file].md`
 - **Branding:** All output must use the agent's name, tagline, colors, and signature from config — never generic placeholders.
 - **Fair housing:** All content must comply with federal Fair Housing Act and HUD language guidelines. See `references/real-estate-vocabulary.md`.
 

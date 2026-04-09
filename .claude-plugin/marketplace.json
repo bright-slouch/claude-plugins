@@ -1,4 +1,5 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "alec-plugins",
   "owner": {
     "name": "Alec Mandla",
@@ -11,8 +12,7 @@
     {
       "name": "real-estate-plugin",
       "source": "./plugins/indiana-real-estate-plugin",
-      "description": "Central Indiana real estate agent toolkit — 19 skills for listing management, buyer consultation, offer writing, transaction coordination, market analysis, client communication, and compliance within the MIBOR BLC system",
-      "version": "0.1.0"
+      "description": "Central Indiana real estate agent toolkit — 19 skills for listing management, buyer consultation, offer writing, transaction coordination, market analysis, client communication, and compliance within the MIBOR BLC system"
     }
   ]
 }

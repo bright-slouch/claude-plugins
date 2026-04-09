@@ -201,7 +201,7 @@ For quick reference on the most common questions:
 
 If the agent has drafted any property description, listing remarks, or marketing copy, offer to review it for fair housing compliance.
 
-Reference `~/Skills/real-estate-plugin/references/real-estate-vocabulary.md` for approved terminology and prohibited language.
+Reference `references/real-estate-vocabulary.md` for approved terminology and prohibited language.
 
 Common red flags to check:
 - Describing neighborhood demographics in any way (race, national origin, religion, ethnicity)
@@ -260,8 +260,8 @@ Always close the summary with the mandatory legal disclaimer (see below).
 
 ### Reads From
 - `config/[slug]/agent-profile.yaml` — agent identity and brokerage disclaimer text
-- `~/Skills/real-estate-plugin/references/indiana-disclosure-requirements.md` — governing law, form sections, exemptions
-- `~/Skills/real-estate-plugin/references/real-estate-vocabulary.md` — fair housing language guidance
+- `references/indiana-disclosure-requirements.md` — governing law, form sections, exemptions
+- `references/real-estate-vocabulary.md` — fair housing language guidance
 - `re-disclosure-assistant/references/disclosure-decision-trees.md` — common situation guidance
 
 ### Works With

@@ -74,11 +74,11 @@ data tool.
 
 Load the following config files before doing anything else:
 
-- `~/Skills/real-estate-plugin/config/[slug]/agent-profile.yaml` — voice,
+- `config/[slug]/agent-profile.yaml` — voice,
   tone, methodology (always load first)
-- `~/Skills/real-estate-plugin/config/[slug]/brand-kit.yaml` — colors,
+- `config/[slug]/brand-kit.yaml` — colors,
   hashtags, disclaimer text, tagline
-- `~/Skills/real-estate-plugin/config/[slug]/market-areas.yaml` — primary
+- `config/[slug]/market-areas.yaml` — primary
   service areas, farm areas, preferred counties
 
 **If agent config not found:** Direct the agent to run `/re-agent-setup` to
@@ -178,7 +178,7 @@ mapping.
 ### Step 5: Add Central Indiana Context
 
 Before generating output, cross-reference with
-`~/Skills/real-estate-plugin/references/central-indiana-market-context.md`
+`references/central-indiana-market-context.md`
 for county-specific context:
 
 - **Hamilton County:** Note whether premium pricing reflects Carmel/Zionsville

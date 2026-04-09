@@ -64,7 +64,7 @@ Anniversary email for the Hendersons — closed on their Carmel home one year ag
 
 ### Step 1: Load Agent Config
 
-Load the following from `~/Skills/real-estate-plugin/config/[slug]/`:
+Load the following from `config/[slug]/`:
 
 - `agent-profile.yaml` — voice, tone, formality, greeting/closing style, emoji preference, exclamation frequency, personality traits
 - `email-templates.yaml` — signature block, base milestone templates
@@ -166,7 +166,7 @@ Before finalizing any output, scan for language issues. Flag (do not silently fi
 - Disability-related language: "handicap accessible" (use "accessible"), ability-based assumptions about buyers
 - Age-based language: "ideal for retirees" (use "single-level living" or "low upkeep")
 
-Cross-reference `~/Skills/real-estate-plugin/references/real-estate-vocabulary.md` and `re-client-communication/references/communication-scenarios.md` for the full avoid list.
+Cross-reference `references/real-estate-vocabulary.md` and `re-client-communication/references/communication-scenarios.md` for the full avoid list.
 
 If a flag is found: present the issue to the agent with a suggested replacement. Do not output a communication with a fair housing issue uncorrected.
 

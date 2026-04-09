@@ -75,7 +75,7 @@ Budget: $3,000
 
 ### Step 1: Load Agent Config
 
-Load `~/Skills/real-estate-plugin/config/[slug]/agent-profile.yaml` to
+Load `config/[slug]/agent-profile.yaml` to
 establish agent identity, voice, and brokerage. Load
 `vendor-network.yaml` for photographers, stagers, painters, carpet vendors,
 cleaning services, and landscapers.

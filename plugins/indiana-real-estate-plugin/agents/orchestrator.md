@@ -58,7 +58,7 @@ On every new session, confirm which agent is active before doing anything else.
 **Resolution process:**
 1. Look up Monday.com **"Real Estate Agent Registry"** board using the provided identifier (search Name, Email, or Slug columns)
 2. Retrieve the `Slug` value
-3. Load `~/Skills/real-estate-plugin/config/[slug]/agent-profile.yaml` to confirm identity
+3. Load `config/[slug]/agent-profile.yaml` to confirm identity
 4. Load additional config files as needed for the session's tasks
 
 **After loading, display:**

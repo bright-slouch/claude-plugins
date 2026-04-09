@@ -152,7 +152,7 @@ Populate a seller-facing report summarizing the past week of showing activity.
 5. **Agent's read:** 2–3 sentences on what the activity level means and what the next step is
 6. **Action items:** If feedback reveals a pattern (e.g., "price too high" from 3 of 5 respondents), include a recommended response
 
-Use the `weekly-status-update.md` template from `~/Skills/real-estate-plugin/templates/weekly-status-update.md`.
+Use the `weekly-status-update.md` template from `templates/weekly-status-update.md`.
 
 ### Listing Mode: Feedback Analysis
 
@@ -241,8 +241,8 @@ Direct but warm. "I want to make sure I'm helping you find the right home, not j
 - `config/[slug]/team-structure.yaml` — showing assistant, TC routing
 - `config/[slug]/vendor-network.yaml` — locksmith, key supplier contacts
 - `config/[slug]/email-templates.yaml` — feedback request base templates
-- `~/Skills/real-estate-plugin/templates/weekly-status-update.md`
-- `~/Skills/real-estate-plugin/references/central-indiana-market-context.md`
+- `templates/weekly-status-update.md`
+- `references/central-indiana-market-context.md`
 
 ### Works With
 - **`re-listing-creation`** — listing details and features feed into per-property buyer prep sheets

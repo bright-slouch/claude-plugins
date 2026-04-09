@@ -62,9 +62,9 @@ Any news relevant to my buyers who are rate shopping right now?
 
 Load these config files before fetching any feeds:
 
-- `~/Skills/real-estate-plugin/config/[slug]/agent-profile.yaml` — agent name, tone preset, formality level, emoji preference
-- `~/Skills/real-estate-plugin/config/[slug]/market-areas.yaml` — farm areas, counties, cities (used to build custom feed queries)
-- `~/Skills/real-estate-plugin/config/[slug]/brand-kit.yaml` — hashtags, tagline (only needed if generating a social post)
+- `config/[slug]/agent-profile.yaml` — agent name, tone preset, formality level, emoji preference
+- `config/[slug]/market-areas.yaml` — farm areas, counties, cities (used to build custom feed queries)
+- `config/[slug]/brand-kit.yaml` — hashtags, tagline (only needed if generating a social post)
 
 If the agent config is not found, direct the user to run `/re-agent-setup` first.
 
@@ -95,7 +95,7 @@ Examples:
 
 **Limit:** Add at most 3 custom farm area feeds. If the agent has more than 3 farm areas, prioritize by the order they appear in `market-areas.yaml` (primary farm area first).
 
-Full feed reference with known working/non-working URLs: `~/Skills/real-estate-plugin/re-news-briefing/references/rss-feed-directory.md`
+Full feed reference with known working/non-working URLs: `skills/re-news-briefing/references/rss-feed-directory.md`
 
 ---
 
@@ -293,7 +293,7 @@ For weekly digests, group stories by category and add a brief "week in review" s
 - **Never omit source attribution** — every story must show its source (IBJ, Axios Indianapolis, IndyStar via Google News, etc.) and publication date. Anonymous sourcing is not acceptable.
 - **Never reproduce more than 15 words verbatim from any article** — summarize and contextualize; do not quote extensively.
 - **Never include stories older than the age filter** — a 3-day-old story is not "news" in a daily briefing.
-- **Never use fair-housing-violating language** — even if the source article uses language that describes neighborhoods by protected characteristics, do not reproduce or paraphrase it. Reference `~/Skills/real-estate-plugin/references/real-estate-vocabulary.md` for approved terms.
+- **Never use fair-housing-violating language** — even if the source article uses language that describes neighborhoods by protected characteristics, do not reproduce or paraphrase it. Reference `references/real-estate-vocabulary.md` for approved terms.
 - **Never present a Google News aggregated story as having a single authoritative source** — Google News pulls from many outlets; acknowledge the aggregated nature when the direct source is unclear.
 - **Never generate a social post from a story involving litigation, discrimination complaints, or regulatory violations** — these are not shareable.
 - **Never claim a CMA or pricing data from a news article is equivalent to a licensed appraisal** — if referencing price data from Zillow, Redfin, or similar, note it as "reported by [source]" not as authoritative valuation.
@@ -314,10 +314,10 @@ For weekly digests, group stories by category and add a brief "week in review" s
 - `brand-kit.yaml` — hashtags and tagline (social post only)
 
 ### Reference Files
-- `~/Skills/real-estate-plugin/re-news-briefing/references/rss-feed-directory.md` — full feed directory with working/non-working status and parse notes
+- `skills/re-news-briefing/references/rss-feed-directory.md` — full feed directory with working/non-working status and parse notes
 
 ---
 
 ## Example Prompts
 
-See `~/Skills/real-estate-plugin/re-news-briefing/examples/example-prompts.md` for 6 detailed scenarios.
+See `skills/re-news-briefing/examples/example-prompts.md` for 6 detailed scenarios.

@@ -188,7 +188,7 @@ Present three options:
 
 ### Step 8: Seller Net Sheet
 
-Load `~/Skills/real-estate-plugin/templates/seller-net-sheet.md`.
+Load `templates/seller-net-sheet.md`.
 Pull commission rates from `config/[slug]/fee-structure.yaml`.
 
 Run net sheet at all three price points so seller sees the difference.

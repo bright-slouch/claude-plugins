@@ -146,7 +146,7 @@ Also load:
 
 ### Sign-In Sheet Setup
 
-Use template `~/Skills/real-estate-plugin/templates/open-house-sign-in.md`.
+Use template `templates/open-house-sign-in.md`.
 
 Customize for the property:
 - Property address and date/time pre-filled at the top
@@ -281,9 +281,9 @@ Provide the seller with a post-open-house summary the same evening or next morni
 - `config/[slug]/brand-kit.yaml` — hashtags, tagline, compliance disclaimers
 - `config/[slug]/email-templates.yaml` — follow-up email base templates
 - `config/[slug]/market-areas.yaml` — neighborhood context for talking points
-- `~/Skills/real-estate-plugin/templates/open-house-sign-in.md`
-- `~/Skills/real-estate-plugin/templates/weekly-status-update.md`
-- `~/Skills/real-estate-plugin/references/real-estate-vocabulary.md`
+- `templates/open-house-sign-in.md`
+- `templates/weekly-status-update.md`
+- `references/real-estate-vocabulary.md`
 
 ### Works With
 - **`re-property-marketing`** — social content here is a subset of the broader marketing campaign; open house promo posts can be generated here or there

@@ -80,7 +80,7 @@ Neighborhood: Fishers, HSE schools, 5 min to I-69, Flat Fork Creek Park nearby
 
 ### Step 1: Load Agent Config
 
-Load `~/Skills/real-estate-plugin/config/[slug]/agent-profile.yaml` for
+Load `config/[slug]/agent-profile.yaml` for
 agent identity and voice. Load `brand-kit.yaml` for hashtags, tagline,
 brand colors (for social formatting guidance), and compliance disclaimers.
 

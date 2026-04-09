@@ -171,7 +171,7 @@ My compensation: I'll ask every listing to pay [X]% or $[amount] of the buyer br
 
 ### Step 5: Generate Buyer Presentation
 
-Load `~/Skills/real-estate-plugin/templates/buyer-presentation.md`.
+Load `templates/buyer-presentation.md`.
 
 Personalize with:
 - Agent name, photo placeholder, brokerage, license #

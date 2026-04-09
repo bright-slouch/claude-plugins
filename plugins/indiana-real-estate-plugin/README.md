@@ -33,15 +33,17 @@ Residential real estate agents who:
 
 ## Installation
 
-### Option A: Clone from GitHub
+### Option A: Install via Claude Plugin Marketplace (recommended)
 ```
-git clone <repo-url> ~/Skills/real-estate-plugin
+/plugin marketplace add alecmandla/claude-plugins
+/plugin install real-estate-plugin
 ```
 
-### Option B: Download ZIP
-1. Download the ZIP file from GitHub
-2. Unzip and rename the folder to `real-estate-plugin` (remove any `-main` suffix)
-3. Open Claude Desktop → **Settings → Plugins** → add the `real-estate-plugin` folder
+### Option B: Clone from GitHub
+```
+git clone https://github.com/alecmandla/claude-plugins.git
+```
+Then add the plugin directory in Claude Desktop → **Settings → Plugins**.
 
 ### First-Time Setup
 
