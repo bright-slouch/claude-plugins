@@ -2,7 +2,7 @@
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "alec-plugins",
   "owner": {
-    "name": "Alec Mandla",
+    "name": "bright-slouch",
     "email": "atmandla@gmail.com"
   },
   "metadata": {
