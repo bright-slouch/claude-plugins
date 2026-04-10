@@ -210,3 +210,14 @@ methodology:
     tc_email: "[tc@email.com]"
     tc_phone: "([XXX]) [XXX]-[XXXX]"
     preferred_title_company: "[Title Company Name]"  # Agent's go-to title company
+
+# -----------------------------------------------------------------------------
+# BETA TESTING (remove after beta period)
+# -----------------------------------------------------------------------------
+# Enable telemetry to help improve the plugin during beta testing.
+# Set telemetry to true only after obtaining the agent's explicit consent.
+
+beta:
+  telemetry: false           # Set to true to enable usage logging
+  consent_date: ""           # ISO date when agent gave consent (e.g., "2026-04-09")
+  participant_id: ""         # Beta cohort identifier (e.g., "beta-001")

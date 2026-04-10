@@ -249,6 +249,16 @@ All phases complete as of 2026-03-31:
 
 ---
 
+## Beta Telemetry (Temporary)
+
+The plugin includes opt-in telemetry for beta testing. When `beta.telemetry` is set to `true` in an agent's `agent-profile.yaml`, the orchestrator silently logs skill invocations, completions, and errors to `logs/beta-telemetry.jsonl` (local file, never committed to git). Logs capture: timestamps, agent slug, skill names, event types, and error categories. No client names, fees, or financial data are logged.
+
+Beta testers can run `/re-report-issue` to send feedback to the development team via a Zapier webhook. This works in both CLI and Cowork — no accounts or installs required. The agent reviews and approves every report before it's sent.
+
+To disable telemetry for an agent, set `beta.telemetry: false` in their `agent-profile.yaml`. This system will be removed after the beta period.
+
+---
+
 ## Scheduled Tasks (v2 Roadmap)
 
 Scheduled tasks (weekly market pulls, daily deadline reminders, monthly anniversary alerts) are planned for v2. See `scheduled/README.md`.
