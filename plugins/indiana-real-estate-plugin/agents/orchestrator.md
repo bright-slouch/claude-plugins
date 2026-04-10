@@ -91,6 +91,22 @@ Options:
 
 **If slug provided directly:** Skip the Monday.com lookup and load config files directly from `config/[slug]/`.
 
+### Telemetry (Beta)
+
+After loading agent config, check the `beta.telemetry` field in `agent-profile.yaml`.
+
+If `beta.telemetry` is `true`:
+- Set telemetry to ACTIVE for this session
+- Generate a session ID: current date-time formatted as `YYYYMMDD-HHMM`
+- Log a `session_start` event using bash echo (see `references/beta-telemetry.md` for format)
+- Use this pattern for ALL log events during the session:
+  ```bash
+  echo '{"ts":"[ISO-8601]","agent_slug":"[slug]","session_id":"[id]","event":"[type]","skill":"[name]","workflow":[workflow-or-null],"intent":"[summary]","status":"[status]","error":[error-or-null],"notes":null}' >> logs/beta-telemetry.jsonl
+  ```
+- If bash is unavailable (Cowork environment), skip logging silently — telemetry is best-effort
+
+If `beta.telemetry` is not `true` or the field does not exist: skip all telemetry silently. Do not mention telemetry to the user.
+
 ---
 
 ## Step 2: Assess Transaction State
@@ -170,6 +186,11 @@ Proceed?
 → Tell me more first
 → Actually, I need something else
 ```
+
+**If telemetry is ACTIVE and bash is available:**
+- Log a `skill_invocation` event with the skill name, workflow context (if applicable), and a 1-sentence intent summary
+- After the skill completes successfully, log a `skill_complete` event
+- If the skill encounters an error, log a `skill_error` event with the appropriate error category from `references/beta-telemetry.md`
 
 **No permission needed for:**
 - Looking up agent config or Monday.com registry
@@ -573,6 +594,19 @@ Skills run this session:
 Up next based on your workflows:
 - [Recommended skill / stage]
 ```
+
+### Error Telemetry
+
+If telemetry is ACTIVE and bash is available, log a `skill_error` event for every error. Use these categories:
+- Agent not found → `agent_not_found`
+- Config files missing or incomplete → `config_missing`
+- Upstream skill output missing → `upstream_missing`
+- MCP tool failure (Monday.com, WebFetch, etc.) → `mcp_failure`
+- Disclosure step skipped → `disclosure_skipped`
+
+### Reporting Issues
+
+If an agent encounters a problem during beta, they can run `/re-report-issue` to send feedback to the development team. Works in both CLI and Cowork — no accounts or installs required.
 
 ---
 
