@@ -6,6 +6,10 @@ description: >-
   USDA, IHCDA), buyer agency agreement explanations compliant with post-August
   2024 NAR requirements, branded buyer presentations, pre-approval checklists,
   and lender referrals from the agent's vendor network.
+  Triggers: "new buyer", "buyer consultation", "buyer meeting", "first-time buyer",
+  "prep for buyer appointment", "buyer presentation", "buyer needs assessment",
+  "buyer agency agreement", "explain buyer agreement", "buyer onboarding",
+  "I have a new buyer", "buyer intake", "help with a buyer".
 argument-hint: "[buyer name or scenario — e.g., 'first-time buyer, Sarah & Tom, budget $350K']"
 ---
 
@@ -69,7 +73,18 @@ Load from `config/[slug]/`:
 - `market-areas.yaml` — geographic context for buyer's target area
 - `fee-structure.yaml` — compensation terms for buyer agreement discussion
 
-If no slug is provided, ask for agent name or email and look up slug in the Monday.com "Real Estate Agent Registry" board. If config is missing: "Run `/re-agent-setup` first — it only takes a few minutes."
+If no slug is provided, ask for agent name or email and look up slug in the Monday.com "Real Estate Agent Registry" board. If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 ---
 

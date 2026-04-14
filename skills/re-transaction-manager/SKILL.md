@@ -7,6 +7,10 @@ description: >-
   (lender, title, agents, inspector), and handles mid-transaction issues including
   inspection extensions, appraisal delays, financing extensions, title problems,
   and amendment tracking. Active from contract acceptance through clear-to-close.
+  Triggers: "we're under contract", "new transaction", "track deadlines", "transaction timeline",
+  "when is the inspection deadline", "weekly update", "transaction status", "contract deadlines",
+  "set up the transaction", "what's due this week", "coordinate with lender",
+  "title issue", "extension needed", "amendment".
 argument-hint: "[new transaction OR deadline update OR weekly update] — property address and contract terms"
 ---
 
@@ -89,7 +93,18 @@ Also read:
 - `references/mibor-forms-checklist.md` — applicable forms (Amendment, Extension, Inspection Response)
 - `re-transaction-manager/references/deadline-checklist.md` — full deadline reference
 
-If no slug provided: ask for agent identification before proceeding.
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 ---
 

@@ -6,6 +6,9 @@ description: >-
   Instagram and Facebook social captions, and a fair housing compliance check.
   Content is written in the agent's brand voice using their brand-kit config and
   follows all MIBOR BLC rules and HUD Fair Housing guidelines.
+  Triggers: "write the listing", "MLS description", "BLC remarks", "listing description",
+  "write remarks", "property description", "create the listing", "listing copy",
+  "MLS content", "social captions for listing", "write up the listing".
 argument-hint: "[agent slug] + property details (beds, baths, sqft, year, features, price range)"
 ---
 
@@ -84,7 +87,18 @@ Load `~/Skills/real-estate-plugin/config/[slug]/agent-profile.yaml` for
 agent identity and voice. Load `brand-kit.yaml` for hashtags, tagline,
 brand colors (for social formatting guidance), and compliance disclaimers.
 
-If config not found: direct agent to run `/re-agent-setup` before continuing.
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 ### Step 2: Gather Property Details
 

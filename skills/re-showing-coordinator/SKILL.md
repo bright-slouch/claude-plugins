@@ -6,6 +6,10 @@ description: >-
   request templates, and feedback analysis for sellers. Buyer side: property
   evaluation prep, multi-home tour routing, side-by-side comparison worksheets,
   and post-showing decision frameworks.
+  Triggers: "showings", "showing feedback", "showing report", "how are showings going",
+  "ShowingTime", "buyer tour", "schedule showings", "compare properties",
+  "which house should they pick", "showing prep", "feedback from showings",
+  "property comparison", "home tour", "showing activity".
 argument-hint: "[listing or buyer side] + [property address or buyer name + tour details]"
 ---
 
@@ -71,7 +75,18 @@ Help me write a post-showing comparison worksheet for buyers who saw 4 homes Sat
 
 Load `agent-profile.yaml` from `config/[slug]/`. If no slug is provided, ask for agent identification and look up the slug in the Monday.com "Real Estate Agent Registry" board.
 
-If no config found: "I don't have your agent profile set up yet. Run `/re-agent-setup` first — it only takes a few minutes."
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 Also load:
 - `team-structure.yaml` — to identify if a showing assistant or TC handles showing coordination

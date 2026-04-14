@@ -5,6 +5,10 @@ description: >-
   questionnaires, personalized listing presentations, Indiana agency explanation
   scripts, pricing strategy frameworks, timeline worksheets, and seller net
   sheet estimates populated from the agent's fee-structure config.
+  Triggers: "listing appointment", "seller consultation", "listing presentation",
+  "prep for listing appointment", "new seller", "I have a listing appointment",
+  "seller meeting", "seller net sheet", "pricing strategy", "list a home",
+  "someone wants to sell", "seller onboarding", "prep for a seller".
 argument-hint: "[seller name, property address, or scenario — e.g., 'motivated seller, 4822 Maple Drive']"
 ---
 
@@ -59,7 +63,18 @@ Generate net sheet estimate for $425,000 sale price
 
 Load `agent-profile.yaml` from `config/[slug]/`. If no slug is provided, ask the agent to identify themselves by name or email and look up their slug in the Monday.com "Real Estate Agent Registry" board.
 
-If no config is found: "I don't have your agent profile set up yet. Run `/re-agent-setup` first — it only takes a few minutes."
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 Also load:
 - `fee-structure.yaml` — for net sheet and commission discussion

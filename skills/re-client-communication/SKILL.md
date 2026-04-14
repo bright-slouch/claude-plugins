@@ -4,6 +4,10 @@ description: >-
   On-brand client communication generator. Drafts emails (with subject lines),
   text messages, phone talking points, and status updates for any transaction
   stage — all personalized to the agent's voice and signature from config.
+  Triggers: "write an email", "draft a text", "email my client", "text the buyer",
+  "call script", "what should I say to", "status update", "weekly update email",
+  "follow up with", "how do I tell my client", "difficult conversation",
+  "no showings email", "low offer response", "send a message to".
 argument-hint: "[communication type and context, e.g. 'email to seller after 2 weeks no offers']"
 ---
 
@@ -69,7 +73,18 @@ Load the following from `~/Skills/real-estate-plugin/config/[slug]/`:
 - `agent-profile.yaml` — voice, tone, formality, greeting/closing style, emoji preference, exclamation frequency, personality traits
 - `email-templates.yaml` — signature block, base milestone templates
 
-**Identify the agent:** Check if a slug was provided directly. If not, look up by name or email in the Monday.com "Real Estate Agent Registry" board. If the agent is not found in either place, direct them to run `/re-agent-setup` before using this skill.
+**Identify the agent:** Check if a slug was provided directly. If not, look up by name or email in the Monday.com "Real Estate Agent Registry" board. If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps. before using this skill.
 
 **Extract these voice fields specifically:**
 - `voice.tone_preset` — determines the overall register of all output

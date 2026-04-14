@@ -6,6 +6,10 @@ description: >-
   photography shot list, virtual staging recommendations, vendor coordination
   notes, and a prep timeline — all personalized to the agent's vendor network
   and the seller's specific property.
+  Triggers: "prep the listing", "get the house ready", "staging advice",
+  "what repairs should the seller do", "photography shot list", "listing prep",
+  "property prep", "prepare the home", "pre-listing checklist", "what to fix before listing",
+  "staging tips", "home prep timeline", "get ready to list".
 argument-hint: "[agent slug or property address + brief property description]"
 ---
 
@@ -80,7 +84,18 @@ establish agent identity, voice, and brokerage. Load
 `vendor-network.yaml` for photographers, stagers, painters, carpet vendors,
 cleaning services, and landscapers.
 
-If config not found: direct agent to run `/re-agent-setup` before continuing.
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 ### Step 2: Assess the Property
 

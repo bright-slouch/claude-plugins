@@ -121,6 +121,7 @@ Presentation and document templates live in:
 | `open-house-sign-in.md` | re-open-house |
 | `weekly-status-update.md` | re-transaction-manager, re-client-communication |
 | `closing-gift-tracker.md` | re-closing-coordinator |
+| `iar-form-150-purchase-agreement-2026.pdf` | re-offer-writer (Form 150 PDF generation) |
 
 ---
 
@@ -129,7 +130,7 @@ Presentation and document templates live in:
 ### Foundation
 | Skill | Description |
 |---|---|
-| `re-agent-setup` | Onboard a new agent — creates Monday.com registry entry and all 7 config files |
+| `re-agent-setup` | Onboard a new agent — creates Monday.com registry entry and all 7 config files. Alias: `/re-setup` |
 
 ### Core (Phase 1)
 | Skill | Description |
@@ -168,7 +169,7 @@ Presentation and document templates live in:
 
 ## Orchestrator
 
-The orchestrator lives at `agents/orchestrator.md` and is the default entry point when working in this plugin directory (see `settings.json`). It coordinates multi-skill workflows, identifies agents, assesses transaction state, and routes to the right skill. Use it when starting a new client engagement or when the user doesn't know which skill to invoke.
+The orchestrator lives at `agents/orchestrator.md` and is available via `/orchestrator` (see `commands/orchestrator.md`). It is **not** the default entry point — individual slash commands work independently without the orchestrator. Use the orchestrator when starting a new client engagement, running multi-skill workflows, or when the user doesn't know which skill to invoke.
 
 A SKILL.md stub at `orchestrator/SKILL.md` provides a reference index of all workflows and skills for discovery purposes. Full orchestrator logic is in `agents/orchestrator.md` only.
 
@@ -196,7 +197,7 @@ The orchestrator uses the `real-estate-plugin:skill-name` prefix format in its f
 ```
 real-estate-plugin/
 ├── .claude-plugin/plugin.json   # Plugin manifest
-├── settings.json                # Default agent setting
+├── settings.json                # Plugin settings (no default agent)
 ├── skills/                      # All 18 skills (auto-discovered by plugin system)
 │   ├── re-agent-setup/SKILL.md
 │   ├── re-cma/SKILL.md

@@ -5,6 +5,10 @@ description: >-
   snapshots for any Central Indiana area — median price, DOM, inventory,
   absorption rate, list-to-sale ratio, and YoY changes. Multiple output
   formats: email newsletter, social media, detailed report, or verbal summary.
+  Triggers: "market update", "how's the market", "what's the market doing",
+  "market stats", "market report", "market snapshot", "monthly market",
+  "quarterly market", "market numbers", "median price", "days on market",
+  "inventory levels", "absorption rate", "market conditions".
 argument-hint: "[area + time period, e.g. 'Hamilton County Q1 2026']"
 ---
 
@@ -81,8 +85,18 @@ Load the following config files before doing anything else:
 - `~/Skills/real-estate-plugin/config/[slug]/market-areas.yaml` — primary
   service areas, farm areas, preferred counties
 
-**If agent config not found:** Direct the agent to run `/re-agent-setup` to
-create their profile before using this skill.
+**If agent config not found:** You MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 **If slug is provided directly:** skip Monday.com lookup and load config files directly.
 

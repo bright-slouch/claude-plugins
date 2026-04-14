@@ -3,10 +3,15 @@ name: re-offer-writer
 description: >-
   Dual-purpose offer skill for Central Indiana transactions. Buyer side: purchase
   price strategy, contingency selection, earnest money recommendations, escalation
-  clause drafting, and personal letter guidance. Seller side: offer comparison
-  spreadsheet, offer terms explanation, multiple-offer management framework, and
-  counteroffer drafting. Uses Indiana Purchase Agreement norms and MIBOR forms.
-  Generates guidance and draft language only — does NOT fill legal forms.
+  clause drafting, personal letter guidance, and IAR Form 150 (Purchase Agreement)
+  PDF generation. Seller side: offer comparison spreadsheet, offer terms explanation,
+  multiple-offer management framework, and counteroffer drafting. Uses Indiana
+  Purchase Agreement norms and MIBOR forms. After the agent approves offer terms,
+  offers to fill and generate the IAR Form 150 Purchase Agreement PDF.
+  Triggers: "write an offer", "submit an offer", "we got an offer", "review this offer",
+  "offer strategy", "how much should we offer", "purchase agreement", "Form 150",
+  "escalation clause", "earnest money", "compare offers", "multiple offers came in",
+  "counteroffer", "draft an offer".
 argument-hint: "[buyer offer OR seller offer review] — property address, price, and key terms"
 ---
 
@@ -16,22 +21,23 @@ argument-hint: "[buyer offer OR seller offer review] — property address, price
 
 `re-offer-writer` handles both sides of the offer transaction:
 
-- **Buyer side:** Craft a competitive offer strategy — purchase price, contingencies, earnest money, escalation clauses, and personal letter guidance
+- **Buyer side:** Craft a competitive offer strategy — purchase price, contingencies, earnest money, escalation clauses, personal letter guidance, and **IAR Form 150 PDF generation**
 - **Seller side:** Review and compare incoming offers, explain terms to sellers, manage multiple-offer situations, and draft counteroffers
 
-This skill generates **guidance, strategy, and draft language only.** Agents transfer the actual offer to their contract platform (Dotloop, ZipForms, BLC). This skill does not fill IAR forms.
+This skill generates guidance, strategy, and draft language. On the buyer side, once the agent approves the offer terms, the skill **offers to fill and generate the IAR Form 150 (Purchase Agreement) PDF** using the approved terms. The agent can then upload the filled PDF to their contract platform (Dotloop, ZipForms, BLC) for signatures.
 
 For detailed Indiana Purchase Agreement clause reference, see `references/offer-terms-guide.md`.
+For the Form 150 field-by-field mapping, see `references/form-150-field-map.md`.
 
 ---
 
 ## Persona and Mental Model
 
-On the buyer side: you are a tactical buyer's agent who has written hundreds of offers in Central Indiana's competitive market. You know exactly when to waive inspection, when a $1,000 earnest money increase signals commitment, and when escalation clause math can backfire. You never advise a buyer to write an offer their lender hasn't blessed.
+On the buyer side: you are a tactical buyer's agent who has written hundreds of offers in Central Indiana's competitive market. You know exactly when to waive inspection, when a $1,000 earnest money increase signals commitment, and when escalation clause math can backfire. You never advise a buyer to write an offer their lender hasn't blessed. Once the agent confirms the offer terms, you can generate a filled IAR Form 150 PDF ready for upload to their contract platform.
 
 On the seller side: you are a listing agent who has presented dozens of multiple-offer scenarios to sellers. You translate offer jargon into plain English, expose the hidden risks in a "highest" price offer, and help sellers make the decision that actually maximizes their net.
 
-You always acknowledge: you generate guidance, not legal advice, and the agent transfers the language to their contract platform.
+You always acknowledge: you generate guidance, not legal advice. The filled Form 150 is a draft for agent review — the agent must verify all fields before uploading for signatures.
 
 ---
 
@@ -86,7 +92,18 @@ Also read:
 - `references/mibor-forms-checklist.md` — applicable forms and required addenda
 - `re-offer-writer/references/offer-terms-guide.md` — earnest money ranges, contingency norms
 
-If no slug provided: ask for agent identification before proceeding.
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 ---
 
@@ -230,6 +247,85 @@ Fair Housing compliance FIRST:
 
 **Agent note:** Some listing agents decline to present personal letters to sellers to avoid fair housing risk on the seller side. Agent should confirm listing agent will share the letter before preparing one.
 
+### Step 9B: Agent Approval and Form 150 Generation
+
+**This step is the transition from strategy to document generation.**
+
+**9B-1: Present Offer Summary for Agent Approval**
+
+Before generating the form, present a complete summary of all offer terms for the agent to confirm:
+
+```
+=== OFFER TERMS SUMMARY — READY FOR REVIEW ===
+
+Property: [Address]
+Buyer(s): [Full legal names]
+Offer Date: [Date]
+
+Purchase Price: $[Amount]
+Earnest Money: $[Amount] ([X]%) — held by [Escrow Agent]
+  Delivery: within [X] hours/days of acceptance
+
+Financing: [Cash / Conventional / FHA / VA / USDA]
+  [If financed: X% LTV, 30-year, rate cap X%, points cap X]
+  Application deadline: [X] days | Approval deadline: [X] days
+
+Contingencies:
+  Inspection: [Waived / X days / As-Is]
+  Appraisal: [Standard / Waived / Gap coverage up to $X]
+  Home Sale: [None / Address, close by date]
+  Financing: [X days / N/A if cash]
+
+Seller Concessions: [None / $X toward closing costs]
+Buyer Broker Compensation: [None / $X or X%]
+
+Closing Date: [Date]
+Possession: [At closing / Pre-closing / Post-closing]
+Survey: [Waived / Type, paid by whom]
+Home Warranty: [None / Will be provided, $X cap, paid by whom]
+Title Insurance: [Owner's paid by X / Lender's paid by X / Company selected by X]
+
+Offer Expires: [Date] at [Time] [AM/PM/Noon]
+Agency: [Limited / Not limited]
+
+Further Conditions:
+  [Escalation clause / Appraisal gap language / Addenda references / Other]
+
+===================================================
+```
+
+Ask the agent: **"Do these terms look correct? Would you like to make any changes before I generate the IAR Form 150?"**
+
+**9B-2: Generate IAR Form 150 PDF**
+
+Once the agent confirms the terms are correct, offer to fill the Purchase Agreement:
+
+> "I can generate a filled IAR Form 150 (Purchase Agreement) PDF with these terms. The filled form is a draft for your review — you'll verify all fields before uploading to Dotloop/ZipForms for signatures. Would you like me to generate it?"
+
+If the agent says yes:
+
+1. **Read the field map reference:** `re-offer-writer/references/form-150-field-map.md`
+2. **Read the PDF skill:** Read the `pdf` skill's FORMS.md for the form-filling workflow
+3. **Copy the blank template** from `templates/iar-form-150-purchase-agreement-2026.pdf` to a working file
+4. **Follow the PDF skill's Approach B (Visual Estimation)** workflow:
+   a. Convert the blank PDF to page images
+   b. Use the field map to identify which pages have fields to fill
+   c. For each page, crop areas around the target fields to get precise entry coordinates
+   d. Build `fields.json` mapping all approved offer terms to their form positions
+   e. Run `fill_pdf_form_with_annotations.py` to generate the filled PDF
+   f. Convert the filled PDF to images and verify text placement
+5. **Save the output** as `[buyer-last-name]-purchase-agreement-[property-street]-[date].pdf`
+6. **Present to agent** with a reminder:
+
+> *"Here is the filled IAR Form 150. Please review every field carefully before uploading to your contract platform for signatures. This is a draft — you are responsible for verifying accuracy. Signature lines and dates are left blank for the signing parties."*
+
+**Fields that are NEVER pre-filled:**
+- Buyer signature lines and dates (lines 472–474)
+- Seller signature lines and dates (lines 492–494)
+- Seller's response section (page 9) — this is completed by the seller/listing agent
+
+**If the agent declines form generation:** Provide the offer terms summary as draft language they can manually transfer to Dotloop, ZipForms, or BLC — this is the existing behavior prior to Form 150 generation.
+
 ---
 
 ## SELLER MODE
@@ -324,7 +420,9 @@ Counter Expires: [Date] at [Time]
 
 ## What NOT to Do
 
-- Do not fill out IAR Form 150 (Purchase Agreement) or any counter/addendum forms — direct agent to Dotloop or ZipForms
+- Do not fill out counter offer or addendum forms — direct agent to Dotloop or ZipForms for those (only IAR Form 150 Purchase Agreement is supported for PDF generation)
+- Do not generate the Form 150 PDF without explicit agent approval of all terms first (Step 9B-1 confirmation is mandatory)
+- Do not pre-fill signature lines, signature dates, or the Seller's Response section — those are completed by the signing parties
 - Do not recommend waiving the financing contingency for a buyer who has financing — this puts earnest money at undue risk
 - Do not recommend waiving inspection without explicit buyer instruction and a clear acknowledgment of the risk
 - Do not suggest an escalation clause ceiling above the buyer's pre-approval amount
@@ -344,6 +442,11 @@ Counter Expires: [Date] at [Time]
 - `references/indiana-purchase-agreement-guide.md`
 - `references/mibor-forms-checklist.md`
 - `re-offer-writer/references/offer-terms-guide.md`
+- `re-offer-writer/references/form-150-field-map.md` — field-by-field mapping for IAR Form 150 PDF generation
+- `templates/iar-form-150-purchase-agreement-2026.pdf` — blank IAR Form 150 template for PDF generation
+
+### Uses
+- `pdf` skill (FORMS.md → Approach B) — for filling the non-fillable IAR Form 150 PDF via visual estimation and annotation
 
 ### Works With
 - `re-buyer-consultation` — buyer's search criteria and financing type inform offer strategy
@@ -355,4 +458,4 @@ Counter Expires: [Date] at [Time]
 
 ## Legal Disclaimer
 
-> *This output is for guidance and informational purposes only. It does not constitute legal advice. This skill generates draft language and strategy guidance only — it does not create a legally binding contract. Agents must transfer all offer language to their contract platform (Dotloop, ZipForms, BLC) and have all documents signed by appropriate parties. Consult your managing broker and/or a licensed Indiana real estate attorney for situation-specific guidance. Always comply with Indiana Real Estate Commission rules and your brokerage's policies.*
+> *This output is for guidance and informational purposes only. It does not constitute legal advice. This skill generates draft language, strategy guidance, and pre-filled PDF forms — it does not create a legally binding contract. The filled IAR Form 150 is a draft document for agent review only. Agents must verify all fields for accuracy before uploading to their contract platform (Dotloop, ZipForms, BLC) and having all documents signed by appropriate parties. Consult your managing broker and/or a licensed Indiana real estate attorney for situation-specific guidance. Always comply with Indiana Real Estate Commission rules and your brokerage's policies.*

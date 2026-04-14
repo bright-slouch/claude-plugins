@@ -5,6 +5,9 @@ description: >-
   adjustment framework, pricing strategy (at-market / aggressive / aspirational),
   absorption rate analysis, and branded seller net sheet. Agents supply comp data;
   this skill guides the analysis and produces formatted output for seller presentations.
+  Triggers: "CMA", "comps", "comparable sales", "what's it worth", "price this listing",
+  "run comps", "market analysis", "pricing analysis", "help me price", "net sheet",
+  "what should we list at", "comp analysis", "pull comps for".
 argument-hint: "address or property description + any known comps or market notes"
 ---
 
@@ -63,7 +66,18 @@ Load these files from `config/[slug]/`:
 - `fee-structure.yaml` — commission rates for net sheet (NEVER hardcode rates)
 - `market-areas.yaml` — confirm submarket, school district, farm areas
 
-If any config file is missing, stop and direct the agent to `/re-agent-setup`.
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 ### Step 2: Collect Subject Property Details
 

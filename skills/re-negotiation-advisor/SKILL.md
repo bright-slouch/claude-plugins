@@ -6,6 +6,10 @@ description: >-
   tactics, multiple-offer management for listing agents, concession frameworks,
   walk-away analysis, and emotional coaching scripts for difficult situations.
   Market-condition aware: buyer's vs seller's market tactics differ throughout.
+  Triggers: "negotiation", "how should I respond to this offer", "inspection came back",
+  "appraisal gap", "low offer", "counteroffer", "multiple offers", "what should I counter",
+  "buyer wants repairs", "seller won't budge", "walk away or negotiate",
+  "concessions", "how to handle this inspection", "negotiation strategy".
 argument-hint: "[negotiation scenario — e.g., 'inspection came back with $18K of issues, buyer side']"
 ---
 
@@ -78,7 +82,18 @@ Also read:
 - `references/indiana-purchase-agreement-guide.md` — contractual mechanic context
 - `references/mibor-forms-checklist.md` — applicable forms (Inspection Response, Amendment)
 
-If no slug: ask for agent identification before proceeding.
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 ---
 

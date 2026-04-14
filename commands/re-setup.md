@@ -1,7 +1,9 @@
 ---
-description: "Onboard a new agent — creates Monday.com registry entry and all 7 config files"
+description: "Set up your agent profile (alias for /re-agent-setup)"
 argument-hint: "[agent-name or 'new']"
 ---
+
+This is an alias for /re-agent-setup.
 
 You MUST follow these steps in order. Do NOT skip any step.
 

@@ -5,6 +5,10 @@ description: >-
   research report covering schools, taxes, commutes, HOA, flood zones,
   utilities, and amenities — personalized to the agent's brand and
   the buyer's specific priorities.
+  Triggers: "neighborhood report", "tell me about this area", "what's the neighborhood like",
+  "school ratings", "research this neighborhood", "area report", "commute times",
+  "what's it like to live in", "neighborhood info", "local area research",
+  "property taxes in", "HOA info", "flood zone check".
 argument-hint: "[neighborhood, city, or zip code + buyer profile]"
 ---
 
@@ -63,7 +67,18 @@ Load the following config files before producing any output:
 - `~/Skills/real-estate-plugin/config/[slug]/market-areas.yaml` — which areas the agent knows well; flag if the requested area is outside the agent's primary territory
 - `~/Skills/real-estate-plugin/config/[slug]/brand-kit.yaml` — colors, tagline, hashtags, compliance disclaimer for branded report header/footer
 
-If no agent config is found, direct the user to run `/re-agent-setup` before proceeding.
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 ---
 

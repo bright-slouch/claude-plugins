@@ -5,6 +5,9 @@ description: >-
   RSS feeds, de-duplicates headlines, categorizes stories, and formats a
   scannable morning briefing tailored to the agent's market areas. Optional:
   generate a social media post from the top story.
+  Triggers: "news", "real estate news", "morning briefing", "what's in the news",
+  "today's headlines", "IBJ", "Indiana real estate news", "market news",
+  "what's happening in real estate", "daily briefing", "news update".
 argument-hint: "[optional: focus area or 'full briefing']"
 ---
 
@@ -12,11 +15,11 @@ argument-hint: "[optional: focus area or 'full briefing']"
 
 ## Overview
 
-`re-news-briefing` is your personalized morning news editor for Central Indiana real estate. It fetches live RSS feeds from IBJ and Google News, de-duplicates stories across sources, categorizes them by relevance type, and formats a scannable briefing tailored to the agent's specific farm areas and counties.
+`re-news-briefing` is your personalized morning news editor for Central Indiana real estate. It searches for current stories from IBJ, IndyStar, Axios Indianapolis, and other Indiana sources, de-duplicates across sources, categorizes by relevance type, and formats a scannable briefing tailored to the agent's specific farm areas and counties.
 
 This skill goes beyond headlines — it adds local context, flags what's actionable for the agent's clients, and optionally drafts a social post from the most shareable story.
 
-No browser automation or special MCP tools required. RSS feeds are plain HTTP/XML that any WebFetch call can retrieve.
+**Primary method: WebSearch.** RSS feeds (IBJ, Google News) are blocked by the network egress proxy and will fail with WebFetch. Use WebSearch queries to find current stories instead. See Step 2 for the query strategy.
 
 ---
 
@@ -66,58 +69,71 @@ Load these config files before fetching any feeds:
 - `~/Skills/real-estate-plugin/config/[slug]/market-areas.yaml` — farm areas, counties, cities (used to build custom feed queries)
 - `~/Skills/real-estate-plugin/config/[slug]/brand-kit.yaml` — hashtags, tagline (only needed if generating a social post)
 
-If the agent config is not found, direct the user to run `/re-agent-setup` first.
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps. first.
 
 If a slug is provided directly (e.g., `jane-smith-fc-tucker`), skip any registry lookup and load config files directly from `config/[slug]/`.
 
 ---
 
-### Step 2: Build Feed List
+### Step 2: Build Search Queries
 
-Always include these four base feeds:
+Use **WebSearch** (not WebFetch) to find current stories. IBJ, Google News RSS, and IndyStar are all blocked by the network egress proxy and will fail if fetched directly.
 
-| Feed | URL |
-|---|---|
-| IBJ Real Estate | `https://www.ibj.com/topics/real-estate/feed` |
-| IBJ Main | `https://www.ibj.com/feed` |
-| Google News: Indianapolis RE | `https://news.google.com/rss/search?q=Indianapolis+real+estate&hl=en-US&gl=US&ceid=US:en` |
-| Google News: Indiana Market | `https://news.google.com/rss/search?q=Indiana+housing+market&hl=en-US&gl=US&ceid=US:en` |
+**Always run these base searches:**
 
-Then add custom Google News queries for the agent's farm areas from `market-areas.yaml`. For each farm area or city, build a query URL:
+| Search | Query | Allowed Domains (optional) |
+|---|---|---|
+| Indianapolis RE News | `Indianapolis real estate news [current month] [current year]` | `ibj.com`, `axios.com`, `wthr.com`, `wrtv.com` |
+| Indiana Housing Market | `Indiana housing market news [current month] [current year]` | *(no filter — cast wide)* |
+| Indiana Mortgage/Rates | `Indiana mortgage rates housing [current month] [current year]` | *(no filter)* |
+
+Then add **farm-area-specific searches** using the agent's `market-areas.yaml`. For each primary farm area or county, run:
 
 ```
-https://news.google.com/rss/search?q={CITY}+Indiana+real+estate&hl=en-US&gl=US&ceid=US:en
+[City/County] Indiana real estate [current month] [current year]
 ```
 
 Examples:
-- Farm area: "Carmel" → `https://news.google.com/rss/search?q=Carmel+Indiana+real+estate&hl=en-US&gl=US&ceid=US:en`
-- Farm area: "Hamilton County" → `https://news.google.com/rss/search?q=Hamilton+County+Indiana+homes&hl=en-US&gl=US&ceid=US:en`
+- Farm area: "Carmel" → `Carmel Indiana real estate April 2026`
+- Farm area: "Hamilton County" → `Hamilton County Indiana housing market 2026`
 
-**Limit:** Add at most 3 custom farm area feeds. If the agent has more than 3 farm areas, prioritize by the order they appear in `market-areas.yaml` (primary farm area first).
+**Limit:** Run at most 3 farm area searches (on top of the 3 base searches). Prioritize by the order they appear in `market-areas.yaml`.
 
-Full feed reference with known working/non-working URLs: `~/Skills/real-estate-plugin/re-news-briefing/references/rss-feed-directory.md`
+**Note on IndyStar:** IndyStar blocks the web crawler directly (returns 400). IndyStar stories may still appear in general search results without a domain filter. Do not include `indystar.com` in `allowed_domains`.
+
+**Note on IBJ:** IBJ articles appear in WebSearch results even though `ibj.com` is blocked for direct WebFetch. Include `ibj.com` in `allowed_domains` for the Indianapolis RE News search — WebSearch can index it even though WebFetch cannot fetch it.
 
 ---
 
-### Step 3: Fetch All Feeds
+### Step 3: Collect and Normalize Results
 
-Use WebFetch to retrieve each RSS feed URL. RSS feeds return plain XML over HTTP — no authentication, no browser required.
+From each WebSearch result, extract:
 
-For each feed, parse the XML to extract these fields per item:
-
-| Field | RSS Tag | Notes |
+| Field | Source | Notes |
 |---|---|---|
-| Title | `<title>` | Strip CDATA wrappers and HTML tags |
-| Link | `<link>` | Destination URL |
-| Summary | `<description>` | Strip HTML tags; first 2-3 sentences only |
-| Published date | `<pubDate>` | RFC 2822 format |
-| Source name | `<source>` or feed title | Used for attribution and dedup priority |
+| Title | Search result title | Clean up any trailing site names (e.g., " | IBJ") |
+| Link | Search result URL | Direct article URL |
+| Summary | Search result snippet | 1-2 sentences; may need augmenting from context |
+| Source name | Domain of URL | e.g., ibj.com → "IBJ", axios.com → "Axios Indianapolis" |
+| Freshness | Search result date or inferred | WebSearch results are ranked by relevance; prefer recent items |
 
-**Age filter:**
-- Daily briefing: exclude items older than 48 hours
-- Weekly digest: include items up to 7 days old
+**Freshness filter:**
+- Daily briefing: strongly prefer items from the last 7 days; exclude anything clearly older than 30 days
+- Weekly digest: include items up to 14 days old
+- Note: WebSearch doesn't always return exact publication dates. Use judgment based on date references in titles/snippets. When in doubt, include the story.
 
-If a feed returns an HTTP error, is unreachable, or returns no parseable items, log the failure ("IBJ feed unavailable — skipping") and continue with remaining feeds. Never abort the entire briefing because one feed is down.
+If a search returns no results or errors, log it and continue with the remaining searches. Never abort the entire briefing because one search failed.
 
 ---
 
@@ -125,11 +141,13 @@ If a feed returns an HTTP error, is unreachable, or returns no parseable items, 
 
 After collecting all items, identify duplicate stories (the same news event covered by multiple sources).
 
-**Dedup rule:** If two headlines share 5 or more consecutive words, treat them as the same story. Keep one item using this priority order:
+**Dedup rule:** If two headlines share 5 or more consecutive words, treat them as the same story. Keep one item using this source priority order:
 
-1. IBJ Real Estate feed (highest authority for local Indiana RE)
-2. IBJ Main feed
-3. Google News aggregated feeds (any)
+1. IBJ (ibj.com) — highest authority for local Indiana RE
+2. Axios Indianapolis, MIBOR/IAR official sources
+3. IndyStar, WTHR, WRTV — local news outlets
+4. National outlets (Zillow, Realtor.com, Redfin blogs, HousingWire summaries)
+5. Agent blogs or smaller local sites (lowest priority)
 
 When keeping the authoritative item, you may augment its summary with context from the duplicate if the duplicate source added meaningful detail.
 
@@ -212,7 +230,7 @@ Prepared for [Agent First Name] [Agent Last Name] | [Brokerage Name]
 
 ---
 
-*[count] stories from [count] sources | Feeds fetched [time] | [any feeds that failed]*
+*[count] stories from [count] sources | Searched [time] | [any searches that returned no results]*
 
 ---
 *News content is sourced from third-party RSS feeds. [Agent Name] does not endorse or verify the accuracy of third-party reporting. Verify important market claims before sharing with clients.*
@@ -256,20 +274,25 @@ See the exact structure above in Step 7. Key formatting rules:
 
 - Each story: headline (linked), source + date, 1-2 sentence summary + local context, actionable note if warranted, link
 - Emojis: use if agent formality < 7; omit if formality >= 7
-- Footer: always include story/source count, fetch time, any feed failures
+- Footer: always include story/source count, search time, any searches that failed
 - Disclaimer: always include the third-party content disclaimer at the bottom
 
 ---
 
-## Feed Failure Handling
+## Search Failure Handling
 
-If any individual feed fails (HTTP error, timeout, empty response, malformed XML):
+If any individual WebSearch query returns no results or errors:
 
-1. Log the failure inline: `[IBJ Real Estate feed returned 503 — skipped]`
-2. Continue fetching remaining feeds without interruption
-3. If all Google News feeds succeed but both IBJ feeds fail, note this prominently: "IBJ feeds unavailable — briefing based on Google News aggregation only. For IBJ coverage, visit ibj.com directly."
-4. If all feeds fail: inform the agent and suggest trying again in a few minutes. Do not fabricate stories.
-5. Partial briefings are valid — 2 stories from one working feed is better than no briefing.
+1. Log the failure inline: `[Farm area search for "Carmel" returned no results — skipped]`
+2. Continue with remaining searches without interruption
+3. If all searches fail: inform the agent and suggest trying again in a few minutes. Do not fabricate stories.
+4. Partial briefings are valid — 3 stories from one working search is better than no briefing.
+
+**Known domain restrictions (as of April 2026):**
+- `ibj.com` — blocked by WebFetch egress proxy; works in WebSearch results
+- `news.google.com` — blocked by WebFetch egress proxy; not needed with WebSearch approach
+- `indystar.com` — blocked by web crawler (400 error); stories surface in general WebSearch without domain filter
+- `inman.com`, `housingwire.com` — paywalled, not available through any method
 
 ---
 
@@ -314,7 +337,7 @@ For weekly digests, group stories by category and add a brief "week in review" s
 - `brand-kit.yaml` — hashtags and tagline (social post only)
 
 ### Reference Files
-- `~/Skills/real-estate-plugin/re-news-briefing/references/rss-feed-directory.md` — full feed directory with working/non-working status and parse notes
+- `~/Skills/real-estate-plugin/skills/re-news-briefing/references/rss-feed-directory.md` — source directory with domain accessibility notes and search query patterns
 
 ---
 

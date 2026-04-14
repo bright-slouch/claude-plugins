@@ -1,6 +1,39 @@
 ---
-description: Negotiation strategy and talking points for buyer and seller situations
+description: "Negotiation strategy and talking points for buyer and seller situations"
 argument-hint: "[negotiation scenario — e.g., 'inspection came back with $18K of issues, buyer side']"
 ---
 
-Run the `real-estate-plugin:re-negotiation-advisor` skill. Covers inspection response strategy, appraisal gap tactics, multiple-offer management, concession frameworks, walk-away analysis, and emotional coaching scripts for difficult situations.
+You MUST follow these steps in order. Do NOT skip any step.
+
+## Step 1: Resolve the agent
+
+Determine which agent is active using one of these methods (try in order):
+
+1. If the user provided an agent slug as part of their argument, use that slug directly.
+2. Check if the user’s email (from the conversation context) matches an agent in the Monday.com "Real Estate Agent Registry" board. Search the Email column.
+3. If a previous turn in this session already identified the agent, reuse that slug.
+
+If an agent slug is resolved, load the config files from:
+  ~/Skills/real-estate-plugin/config/[slug]/agent-profile.yaml
+
+If the agent CANNOT be resolved by any of the above methods, respond with EXACTLY this message and then STOP (do not proceed to Step 2):
+
+---
+I’d be happy to help with that! First, I need to know which agent profile to use.
+
+Please provide one of the following:
+- Your **full name** as registered in the Agent Registry
+- Your **email address**
+- Your **config slug** (e.g., `jane-smith-fc-tucker`)
+
+Or if you haven’t set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+---
+
+## Step 2: Load and execute the skill
+
+Read the SKILL.md file at:
+  ~/Skills/real-estate-plugin/skills/re-negotiation-advisor/SKILL.md
+
+Then follow ALL instructions in SKILL.md starting from **Step 2** onward (skip SKILL.md’s Step 1 since agent config was already resolved above).
+
+Pass the user’s argument: {{ arguments }}

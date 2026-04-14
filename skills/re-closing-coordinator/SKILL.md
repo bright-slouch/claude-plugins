@@ -8,6 +8,10 @@ description: >-
   final walkthrough checklist, closing day prep for buyers and sellers, and
   the full post-closing sequence: congratulations email, closing gift tracking,
   review request, and home anniversary scheduling.
+  Triggers: "closing", "clear to close", "final walkthrough", "closing day",
+  "closing checklist", "utility transfer", "post-closing", "closing gift",
+  "closing disclosure review", "we're closing next week", "after closing",
+  "congratulations email", "review request", "home anniversary".
 argument-hint: "[clear to close OR final walkthrough OR closing day OR post-closing] — property address"
 ---
 
@@ -82,7 +86,18 @@ Also read:
 - `re-closing-coordinator/references/closing-checklist.md` — complete closing reference
 - `templates/closing-gift-tracker.md` — post-closing gift tracking
 
-If no slug: ask for agent identification before proceeding.
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 ---
 

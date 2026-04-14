@@ -5,6 +5,9 @@ description: >-
   Disclosure form (IC 32-21-5-10) section by section, explains lead paint
   requirements for pre-1978 homes, flags fair housing risks, and provides
   decision trees for common disclosure questions.
+  Triggers: "disclosure", "seller disclosure", "disclosure form", "what do I disclose",
+  "lead paint", "do I need to disclose", "disclosure question", "material defect",
+  "property condition", "seller's disclosure form", "IC 32-21", "known defect".
 argument-hint: "[property address or 'new disclosure']"
 ---
 
@@ -68,7 +71,18 @@ Estate sale — executor has never lived in the house. How do we handle the unkn
 
 Load `agent-profile.yaml` from `config/[slug]/`. If a slug is not provided, ask the agent to identify themselves by name or email, then look up their slug in the Monday.com "Real Estate Agent Registry" board.
 
-If no config is found, say: "I don't have your agent profile set up yet. Run `/re-agent-setup` first and then come back — it only takes a few minutes."
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 Once loaded, use the agent's name, brokerage, and managing broker name throughout the session.
 

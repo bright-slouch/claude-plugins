@@ -6,6 +6,10 @@ description: >-
   print flyer text, broker open invitation, and video/reel scripts. All output
   uses brand-kit.yaml for hashtags, tagline, and colors, with fair housing
   compliance on every piece.
+  Triggers: "marketing campaign", "just listed post", "social media for listing",
+  "email blast", "print flyer", "market the listing", "promote this property",
+  "just sold post", "under contract post", "video script", "reel script",
+  "broker open invite", "marketing materials".
 argument-hint: "[property address + key details + agent slug + campaign type needed]"
 ---
 
@@ -78,7 +82,18 @@ Load these files from `config/[slug]/`:
 - `email-templates.yaml` — signature block, email formatting preferences
 - `market-areas.yaml` — confirm submarket, neighborhood context, farm areas
 
-If any config file is missing, stop and direct the agent to `/re-agent-setup`.
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 ### Step 2: Gather Property Details
 

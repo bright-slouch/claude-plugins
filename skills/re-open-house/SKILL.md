@@ -6,6 +6,10 @@ description: >-
   property-specific talking points. During: sign-in sheet, conversation starters,
   and security reminders. Post-event: same-day thank-you through 1-week follow-up
   sequence, feedback collection, and seller report.
+  Triggers: "open house", "plan an open house", "open house this weekend",
+  "open house sign-in", "open house follow-up", "promote the open house",
+  "open house talking points", "broker open", "mega open house",
+  "open house report for seller".
 argument-hint: "[property address + open house date/time + agent slug]"
 ---
 
@@ -61,7 +65,18 @@ Broker open house invitation for 3301 Willow Bend Dr, Fishers — Thursday [date
 
 Load `agent-profile.yaml` and `brand-kit.yaml` from `config/[slug]/`. If no slug is provided, ask for agent identification and look up in the Monday.com "Real Estate Agent Registry" board.
 
-If no config found: "I don't have your agent profile set up yet. Run `/re-agent-setup` first."
+If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+
+> I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
+>
+> Please provide one of the following:
+> - Your **full name** as registered in the Agent Registry
+> - Your **email address**
+> - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+>
+> Or if you haven't set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+
+Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
 Also load:
 - `email-templates.yaml` — for follow-up sequence base templates
