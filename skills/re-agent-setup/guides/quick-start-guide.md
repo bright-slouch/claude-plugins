@@ -2,11 +2,10 @@
 
 ## What You're Setting Up
 
-Running `re-agent-setup` creates two things:
-1. **Your entry in the agent registry** (Monday.com board) — so all skills can find you by name or email
-2. **Your personal config folder** at `config/[your-slug]/` — 7 YAML files that tell every skill who you are, how you communicate, where you work, and who you prefer to work with
+Running `re-agent-setup` creates one thing:
+- **Your personal config folder** at `config/[your-slug]/` — 7 YAML files that tell every skill who you are, how you communicate, where you work, and who you prefer to work with
 
-Once set up, every other skill in the plugin automatically personalizes its output to your brand, voice, and market.
+Once set up, every other skill in the plugin automatically personalizes its output to your brand, voice, and market. There is no external registry — identity is entirely slug-based and lives locally under `config/`.
 
 ---
 
@@ -39,8 +38,8 @@ The setup is a conversation, not a form. The skill asks one thing at a time. Her
 3. Your methodology                  (~3 min)
    How do you approach pricing? Buyer strategy? Communication cadence?
 
-4. Market areas and farm areas       (~3 min)
-   Counties, cities, school districts, specific neighborhoods you farm
+4. Market areas (~3 min)
+   Counties, cities, school districts, primary focus areas, secondary coverage areas
 
 5. Brand kit                         (~2 min)
    Colors, tagline, value proposition, hashtags
@@ -88,10 +87,9 @@ The skill generates a unique identifier called a **slug** from your name and bro
 
 This slug is:
 - Used as your folder name (`config/sarah-chen-fc-tucker/`)
-- Used to look you up in Monday.com
 - How you identify yourself to any skill (`"Working as sarah-chen-fc-tucker"`)
 
-You can also just say your name — the skill will look you up by name in the Monday.com registry.
+You can also just say your name — the skill will match it against the `name.full` field in each `config/*/agent-profile.yaml` and find your slug automatically.
 
 ---
 

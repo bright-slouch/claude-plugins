@@ -29,7 +29,7 @@ I'm working as [Agent Name] — help me [describe task]
 ```
 
 The orchestrator will:
-1. Identify the active agent from Monday.com registry
+1. Identify the active agent from the local slug-based config (matches name/email against existing `config/*/agent-profile.yaml` files)
 2. Assess active transaction state
 3. Route to the right skill or guided workflow
 
@@ -51,7 +51,7 @@ The orchestrator will:
 
 | Skill | When to Use |
 |---|---|
-| re-agent-setup | Onboard a new agent — creates Monday.com entry + all 7 config files |
+| re-agent-setup | Onboard a new agent — creates all 7 local YAML config files at `config/[slug]/` |
 | re-disclosure-assistant | Indiana disclosure compliance (IC 32-21-5-10) |
 | re-client-communication | Draft emails, texts, call scripts for any stage |
 | re-neighborhood-research | School, tax, commute, amenities report for buyers |

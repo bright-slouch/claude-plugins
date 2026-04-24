@@ -1,15 +1,28 @@
 # =============================================================================
 # MARKET AREAS — Central Indiana Real Estate Agent Plugin
 # =============================================================================
-# The agent's geographic service area and farm areas.
+# The agent's geographic coverage areas.
 # Loaded by: re-cma, re-market-update, re-news-briefing, re-neighborhood-research,
 # re-seller-consultation, re-buyer-consultation.
 #
 # INSTRUCTIONS:
 # - Primary service area = everywhere agent actively works
-# - Farm areas = geographic niches agent focuses marketing on
+# - Primary focus areas = geographic niches agent concentrates marketing on
+#                         (formerly `farm_areas` — renamed in v0.6.0)
+# - Secondary coverage areas = neighborhoods the agent will work but does NOT
+#                              actively market in. Only list neighborhoods the
+#                              agent explicitly supplies. Do NOT infer from
+#                              adjacency to primary focus areas.
 # - MLS areas = MIBOR BLC geographic area codes (used in MLS searches)
 # - Price ranges are approximate — updated as market shifts
+#
+# MIGRATION NOTE (v0.6.0):
+# If you see an existing config with `farm_areas:` or `secondary_areas:`, those
+# are the old field names. Skills will transparently remap on first read:
+#   farm_areas       → primary_focus_areas
+#   secondary_areas  → secondary_coverage_areas
+# Rename the keys in the file the next time you edit it; both old names are
+# deprecated and will be removed in a future version.
 # =============================================================================
 
 # -----------------------------------------------------------------------------
@@ -71,19 +84,20 @@ primary_service_area:
     - "[Area code]"
 
 # -----------------------------------------------------------------------------
-# FARM AREAS
+# PRIMARY FOCUS AREAS
 # -----------------------------------------------------------------------------
-# Farm areas = specific neighborhoods or micro-markets where agent concentrates
-# listing prospecting and marketing efforts.
+# Primary focus areas = specific neighborhoods or micro-markets where the agent
+# concentrates listing prospecting, direct mail, door-knocking, and marketing.
+# Formerly `farm_areas` — renamed in v0.6.0.
 
-farm_areas:
-  - name: "[Farm Area 1 — e.g., Bridgewater Club]"
+primary_focus_areas:
+  - name: "[Focus Area 1 — e.g., Bridgewater Club]"
     type: "subdivision"               # subdivision | neighborhood | zip_code | school_district
     city: "[City]"
     county: "[County]"
     zip_code: "[XXXXX]"
     description: >
-      [2-3 sentences describing the farm area. Include: housing stock type,
+      [2-3 sentences describing the focus area. Include: housing stock type,
       approximate age, price range, what makes it distinctive.
       Example: "Bridgewater Club is a gated golf course community in Westfield featuring
       custom and semi-custom homes built 2000-2015. Strong HOA maintains community
@@ -110,17 +124,17 @@ farm_areas:
       - "[e.g., Gated community with 24-hour guard]"
       - "[e.g., Walking distance to town center amenities]"
     marketing_notes: >
-      [Agent's notes on how to market in this farm area. Example: "Residents are
+      [Agent's notes on how to market in this focus area. Example: "Residents are
       proud of school system. Lead with HSE schools in any marketing.
       Neighbor referrals are strong here — past clients likely to refer."]
 
-  - name: "[Farm Area 2]"
+  - name: "[Focus Area 2]"
     type: "zip_code"
     city: "[City]"
     county: "[County]"
     zip_code: "[XXXXX]"
     description: >
-      [Description of this farm area]
+      [Description of this focus area]
     price_range:
       min: [XXXXXX]
       max: [XXXXXX]
@@ -133,7 +147,25 @@ farm_areas:
     marketing_notes: >
       [Notes]
 
-# Add more farm areas as needed
+# Add more primary focus areas as needed
+
+# -----------------------------------------------------------------------------
+# SECONDARY COVERAGE AREAS
+# -----------------------------------------------------------------------------
+# Secondary coverage areas = neighborhoods the agent WILL work (if a lead
+# comes in, referral, buyer asks) but does NOT actively market in.
+#
+# CRITICAL BEHAVIOR: Only list neighborhoods the agent EXPLICITLY supplies.
+# Do NOT auto-generate this list from adjacency to primary_focus_areas.
+# Do NOT infer "well Carmel is near Westfield so they probably cover Carmel."
+# Leave this empty if the agent doesn't name specific secondary areas.
+
+secondary_coverage_areas:
+  # - name: "[Neighborhood or city name the agent explicitly mentioned]"
+  #   type: "neighborhood"             # subdivision | neighborhood | zip_code | school_district
+  #   city: "[City]"
+  #   county: "[County]"
+  #   notes: "[Why it's secondary — e.g., 'will work referrals only']"
 
 # -----------------------------------------------------------------------------
 # MARKET NOTES

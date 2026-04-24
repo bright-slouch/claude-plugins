@@ -73,12 +73,12 @@ Load the following from `~/Skills/real-estate-plugin/config/[slug]/`:
 - `agent-profile.yaml` — voice, tone, formality, greeting/closing style, emoji preference, exclamation frequency, personality traits
 - `email-templates.yaml` — signature block, base milestone templates
 
-**Identify the agent:** Check if a slug was provided directly. If not, look up by name or email in the Monday.com "Real Estate Agent Registry" board. If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
+**Identify the agent:** Check if a slug was provided directly. If not, ask the agent for their slug, full name, or email and match against existing `config/*/agent-profile.yaml` files using Glob + Grep. If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
 
 > I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
 >
 > Please provide one of the following:
-> - Your **full name** as registered in the Agent Registry
+> - Your **full name** as it appears in your agent profile
 > - Your **email address**
 > - Your **config slug** (e.g., `jane-smith-fc-tucker`)
 >

@@ -30,7 +30,7 @@ plugin_root: "~/Skills/real-estate-plugin"
 target_skills:
 
   # TIER 0: Foundation
-  - re-agent-setup        # Config generation, Monday.com registry — everything depends on this
+  - re-agent-setup        # Config generation (slug-based, local YAML) — everything depends on this
 
   # TIER 1: Core Skills (test after Tier 0 passes)
   - re-disclosure-assistant   # Indiana disclosure compliance — referenced by re-listing-prep, re-seller-consultation
@@ -214,7 +214,7 @@ tags:
     compare_to_baseline: true
 
   integration:
-    description: "Tests involving multiple skills or external services (Monday.com)"
+    description: "Tests involving multiple skills that pass context across skill boundaries"
     requires_dependencies: true
 
   cross-skill:

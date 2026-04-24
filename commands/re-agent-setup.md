@@ -1,5 +1,5 @@
 ---
-description: "Onboard a new agent — creates Monday.com registry entry and all 7 config files"
+description: "Onboard a new agent — creates all 7 local YAML config files at config/[slug]/"
 argument-hint: "[agent-name or 'new']"
 ---
 

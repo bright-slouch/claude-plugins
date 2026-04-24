@@ -10,11 +10,16 @@ You MUST follow these steps in order. Do NOT skip any step.
 Determine which agent is active using one of these methods (try in order):
 
 1. If the user provided an agent slug as part of their argument, use that slug directly.
-2. Check if the user’s email (from the conversation context) matches an agent in the Monday.com "Real Estate Agent Registry" board. Search the Email column.
-3. If a previous turn in this session already identified the agent, reuse that slug.
+2. If a previous turn in this session already identified the agent, reuse that slug.
+3. If the user’s full name or email is available in the conversation context, try to match it against existing local configs:
+   - Use Glob to list `~/Skills/real-estate-plugin/config/*/agent-profile.yaml`
+   - Use Grep to search each file for the name (under `name.full`) or email (under `contact.email_primary`)
+   - If exactly one match is found, use that slug
 
 If an agent slug is resolved, load the config files from:
   ~/Skills/real-estate-plugin/config/[slug]/agent-profile.yaml
+
+**Legacy field migration:** when loading `market-areas.yaml` for this agent, if the file still uses the old keys `farm_areas:` or `secondary_areas:`, treat them as `primary_focus_areas:` and `secondary_coverage_areas:` respectively. Rename the keys in-place the next time you edit the file and mention the one-line upgrade to the user.
 
 If the agent CANNOT be resolved by any of the above methods, respond with EXACTLY this message and then STOP (do not proceed to Step 2):
 
@@ -22,11 +27,11 @@ If the agent CANNOT be resolved by any of the above methods, respond with EXACTL
 I’d be happy to help with that! First, I need to know which agent profile to use.
 
 Please provide one of the following:
-- Your **full name** as registered in the Agent Registry
-- Your **email address**
 - Your **config slug** (e.g., `jane-smith-fc-tucker`)
+- Your **full name** as it appears in your agent profile
+- Your **email address**
 
-Or if you haven’t set up your profile yet, run **/re-agent-setup** to get started (takes about 10 minutes).
+Or if you haven’t set up your profile yet, run **/re-agent-setup** to get started (takes about 15–20 minutes).
 ---
 
 ## Step 2: Load and execute the skill

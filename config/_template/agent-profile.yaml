@@ -19,6 +19,9 @@ name:
   full: "[First] [Last]"              # Legal name as licensed
   preferred: "[First]"                 # How agent introduces themselves
   professional: "[First Name] [Last]"  # "Jane Smith, REALTOR®" — used in output headers
+  pronouns: ""                         # Ask the agent — never guess. "she/her", "he/him",
+                                       # "they/them", "ze/hir", etc. Blank / TODO is fine
+                                       # if the agent deflects. Do NOT infer from first name.
 
 license:
   number: "RB[XXXXXXXX]"              # Indiana real estate license number (e.g., RB20001234)
@@ -46,6 +49,10 @@ contact:
   email_brokerage: "[name]@[brokerage].com" # Optional — brokerage email if different
   website: "https://[agent-website]"    # Agent's personal website (optional)
   address_mailing: "[City], IN [ZIP]"   # Used in correspondence headers
+  preferred_contact_method: ""          # Ask the agent — never guess. Options:
+                                        # "cell_call" | "cell_text" | "email" |
+                                        # "office_line" | "no_preference".
+                                        # Blank / TODO is fine if the agent deflects.
 
 social:
   # Include only platforms where agent is active
@@ -115,12 +122,22 @@ bio:
 # Skills read these values to match the agent's natural communication style.
 
 voice:
-  # Tone preset — choose one that best matches the agent's brand
-  # Options: professional-friendly | casual-warm | luxury-polished | expert-authoritative
+  # Tone preset — choose ONE that best matches the agent's brand.
+  # These are HARD CONSTRAINTS for content-generating skills — not suggestions.
+  # Options (8 total):
+  #   professional-friendly    — polished but approachable
+  #   casual-warm              — conversational, first-name, low-pressure
+  #   luxury-polished          — sophisticated, premium positioning
+  #   expert-authoritative     — credentialed, positions agent as definitive expert
+  #   data-driven              — numbers-first, analytical, evidence-forward
+  #   investor-focused         — ROI/cash-flow framing, investor vocabulary
+  #   educator                 — teaching posture, explains the "why"
+  #   neighborhood-specialist  — hyperlocal, deep-knowledge-of-streets posture
   tone_preset: "professional-friendly"
 
-  # Formality scale: 1 = very casual (texting a friend), 10 = very formal (legal memo)
+  # Formality scale: 1 = very casual (texting a friend), 10 = very formal (legal memo).
   # Most agents land between 5-7. Luxury market tends toward 7-9.
+  # Skills MUST match this register when generating content.
   formality_scale: 6
 
   # Personality traits — 3-5 adjectives that describe the agent's communication style
@@ -131,22 +148,57 @@ voice:
     - "direct"
     - "warm"
 
-  # How agent typically starts conversations/emails
-  greeting_style: "Hi [First Name],"   # Options: "Hi", "Hello", "Hey", "Good morning", "Dear"
+  # Greeting the agent uses for the majority of client emails/texts.
+  # Used VERBATIM by content-generating skills — do NOT substitute a more
+  # "professional" alternative. If the agent picked "Hey," skills must use
+  # "Hey," — not "Dear" or "Hello".
+  typical_greeting: "Hi [First Name],"
 
-  # How agent signs off
-  closing_style: "Thanks,"             # Options: "Thanks,", "Best,", "Warm regards,", "All the best,"
+  # Secondary greeting used for more formal touchpoints (listing presentations,
+  # first-contact with referral sources, legal-adjacent updates). Optional —
+  # if blank, skills fall back to typical_greeting.
+  alternate_greeting: "Hello [First Name],"
 
-  # Emoji usage in client communications and social media
-  # Options: none | minimal (1-2 per message) | moderate (3-5) | liberal (7+)
-  emoji_usage: "minimal"
+  # Sign-off used in the majority of client emails/texts.
+  # Used VERBATIM — do not substitute.
+  typical_signoff: "Thanks,"
 
-  # Exclamation point frequency
-  # Options: none | sparingly (1 per paragraph max) | moderate | frequent
-  exclamation_frequency: "moderate"
+  # Emoji usage in client communications and social media.
+  # Options (Trevor spec):
+  #   never       — zero emoji, ever. Applies to subject lines too.
+  #   rare        — zero emoji in routine output (templates, check-ins).
+  #                 Allowed only in explicitly celebratory moments (closing day,
+  #                 anniversary) and never in subject lines.
+  #   occasional  — at most one emoji per long-form piece.
+  #                 Never in subject lines unless emoji_usage is "frequent".
+  #   frequent    — emoji are part of the voice. Subject lines allowed.
+  # HARD CONSTRAINT: re-agent-setup writes this value and every content skill
+  # must honor it. The canonical example of a VIOLATION: an emoji in a subject
+  # line when emoji_usage is "rare" — which happens, and should not.
+  emoji_usage: "rare"
+
+  # Exclamation point frequency.
+  # Options (Trevor spec):
+  #   never       — zero "!" anywhere in generated content.
+  #   occasional  — at most one "!" per short piece, two per long-form.
+  #   frequent    — no hard cap; part of the voice.
+  # HARD CONSTRAINT.
+  exclamation_frequency: "occasional"
 
   # Oxford comma preference
   oxford_comma: true
+
+  # Writing sample — 2-3 sentences of the agent's real prose (a recent client
+  # email, a listing description, a social post, whatever the agent writes
+  # naturally). Used by the voice_enforcer post-processing helper (see
+  # references/voice-enforcement.md) as a style anchor for content generation.
+  # Skills should match this sample's rhythm, sentence length, and vocabulary
+  # register. Leave blank if agent declines — but strongly encourage capturing
+  # it during re-agent-setup since it's the highest-leverage voice signal.
+  writing_sample_text: >
+    [Paste 2-3 sentences of the agent's real writing here. Example: a recent
+    client email, a snippet from a listing description, a social caption.
+    DO NOT synthesize — must be real prose from the agent.]
 
   # Vocabulary preferences — terms the agent naturally uses vs avoids
   preferred_terms:
@@ -194,14 +246,28 @@ methodology:
     post_close_check_in: "30 days"      # First check-in after closing
     anniversary_check_in: true          # Send anniversary message 1 year after close
 
-  preferred_showing_days:              # Days agent prefers to schedule showings
-    - "Saturday"
-    - "Sunday"
-    - "Wednesday"
-    - "Thursday"
+  # NOTE: `preferred_showing_days` was removed in v0.6.0. Showing scheduling
+  # depends on the client and urgency of the transaction, not a static agent
+  # preference — trying to honor an abstract day-of-week preference was
+  # consistently unhelpful and has been dropped.
 
-  open_house_preference: true          # Does agent regularly hold open houses?
-  open_house_frequency: "first two weekends after list" # When agent holds open houses
+  open_house_delegation:
+    # Who hosts this agent's open houses? Many experienced agents delegate
+    # open houses to newer agents on their team as a lead-generation tool
+    # for those junior agents. The decision to delegate shapes re-open-house
+    # output — if delegating, the follow-up sequence is addressed to the
+    # hosting agent, not this agent.
+    hosts_own: true                     # true | false
+                                        # true  = this agent personally hosts
+                                        # false = delegates to another agent
+    delegates_to: ""                    # If hosts_own: false, name of the
+                                        # team member who hosts. Must match a
+                                        # person in team-structure.yaml.
+                                        # Blank if hosts_own: true.
+    notes: ""                           # Optional — any nuance about the
+                                        # delegation relationship (e.g.,
+                                        # "only delegates listings under
+                                        # $400K to junior agents").
 
   transaction_coordination:
     # Options: agent-self | tc-internal | tc-external | shared

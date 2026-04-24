@@ -11,7 +11,7 @@ cases:
     description: Identify agent by full name
     input: "I'm working as Jane Smith today"
     expected_behavior:
-      - Looks up "Jane Smith" in Monday.com Real Estate Agent Registry
+      - Matches "Jane Smith" against `name.full` in each `config/*/agent-profile.yaml`
       - Retrieves slug (e.g., jane-smith-fc-tucker)
       - Loads config/jane-smith-fc-tucker/agent-profile.yaml
       - Displays: agent name, brokerage, license #, MLS ID, primary markets
@@ -24,7 +24,7 @@ cases:
     description: Identify agent by email address
     input: "Set up for jsmith@fctucker.com"
     expected_behavior:
-      - Looks up by email column in Monday.com board
+      - Matches email against `contact.email_primary` in each `config/*/agent-profile.yaml`
       - Resolves to correct slug and loads config
     pass_criteria:
       - Email lookup works without asking for name separately
@@ -34,17 +34,17 @@ cases:
     description: Identify agent by slug directly
     input: "Working as jane-smith-fc-tucker"
     expected_behavior:
-      - Skips Monday.com lookup
+      - Loads the slug-based config folder directly
       - Loads config/jane-smith-fc-tucker/ directly
     pass_criteria:
       - Config loads from slug without registry lookup
 
   - id: orch-004
     category: agent_identification
-    description: Agent not found in registry
+    description: Agent not found in local configs
     input: "I'm working as Bob Newhart"
     expected_behavior:
-      - Monday.com lookup finds no match
+      - Local config match finds no result
       - Presents 3 options: search by email, search by slug, run re-agent-setup
     pass_criteria:
       - Does not crash or proceed without agent identity
@@ -133,7 +133,7 @@ cases:
 
   - id: orch-011
     category: error_handling
-    description: Missing config files after registry lookup
+    description: Missing config files after slug resolved
     input: "Working as jane-smith-fc-tucker"
     setup: config/jane-smith-fc-tucker/ exists but fee-structure.yaml and team-structure.yaml are missing
     expected_behavior:

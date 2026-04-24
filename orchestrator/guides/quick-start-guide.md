@@ -5,7 +5,7 @@
 The orchestrator is your primary entry point for the Central Indiana Real Estate Agent Plugin. Rather than picking a specific skill yourself, describe what you're working on and the orchestrator routes you to the right skill or walks you through a guided workflow.
 
 **It handles:**
-- Identifying which agent config to load (via Monday.com registry)
+- Identifying which agent config to load (matches name/email against `config/*/agent-profile.yaml` files)
 - Assessing where active transactions stand and what's needed next
 - Running multi-step workflows where skills hand off data to each other
 - Remembering session context so you don't repeat yourself
@@ -28,7 +28,7 @@ Working as jane-smith-fc-tucker
 Set up for jsmith@fctucker.com
 ```
 
-The orchestrator will load your config from Monday.com and confirm your identity, brokerage, and primary markets.
+The orchestrator will load your config locally and confirm your identity, brokerage, and primary markets.
 
 **First time? Don't have a config yet?**
 ```

@@ -1,16 +1,12 @@
 {
   "name": "real-estate-plugin",
-  "version": "0.1.0",
+  "version": "0.6.0",
   "description": "Central Indiana real estate agent toolkit covering the full buying, selling, and transaction lifecycle within the MIBOR BLC system. Provides 19 skills for listing management, buyer consultation, offer writing, transaction coordination, market analysis, client communication, and compliance — all calibrated to Indiana law, MIBOR forms, and Central Indiana geography.",
   "author": {
     "name": "Alec Mandla"
   },
   "keywords": ["real-estate", "indiana", "mibor", "blc", "listing", "buyer", "transaction", "central-indiana"],
   "userConfig": {
-    "monday_workspace_id": {
-      "description": "Your Monday.com workspace ID for the Real Estate Agent Registry board",
-      "sensitive": false
-    },
     "google_drive_root": {
       "description": "Google Drive root folder ID for agent document storage",
       "sensitive": false

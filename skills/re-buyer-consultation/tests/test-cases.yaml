@@ -59,7 +59,7 @@ tests:
       context: "No slug or agent name provided in prompt"
     assertions:
       - "Skill asks for agent slug or name before generating materials"
-      - "Skill explains how to look up the slug (Monday.com registry)"
+      - "Skill explains how to look up the slug (look for the folder name under `config/` or ask the agent)"
       - "Skill does not generate partially branded materials with placeholders"
 
   # -----------------------------------------------------------------------

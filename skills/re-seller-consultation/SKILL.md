@@ -61,14 +61,14 @@ Generate net sheet estimate for $425,000 sale price
 
 ### Step 1: Load Agent Config
 
-Load `agent-profile.yaml` from `config/[slug]/`. If no slug is provided, ask the agent to identify themselves by name or email and look up their slug in the Monday.com "Real Estate Agent Registry" board.
+Load `agent-profile.yaml` from `config/[slug]/`. If no slug is provided, ask the agent for their slug, full name, or email. Match the name/email against existing `config/*/agent-profile.yaml` files using Glob + Grep.
 
 If the agent config is not found after trying all resolution methods above, you MUST respond with a visible message to the user. Do NOT silently redirect, do NOT produce empty output, and do NOT chain to another command. Instead, respond with:
 
 > I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
 >
 > Please provide one of the following:
-> - Your **full name** as registered in the Agent Registry
+> - Your **full name** as it appears in your agent profile
 > - Your **email address**
 > - Your **config slug** (e.g., `jane-smith-fc-tucker`)
 >

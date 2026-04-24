@@ -70,6 +70,22 @@ buyer:
       reduce the buyer's out-of-pocket compensation. If seller offers less, buyer
       will be responsible for the difference as specified in the agreement."]
 
+  # The agent's plain-English explanation of how post-NAR buyer-side compensation
+  # works. This is read VERBATIM by re-buyer-consultation and any other skill
+  # that needs to walk a buyer through how the agent gets paid. Write it the way
+  # the agent would actually say it out loud in a consultation — not as legal
+  # text. Skills should NOT rewrite this script to match a different voice;
+  # it's the agent's own words. Update when the agent's positioning changes.
+  compensation_explanation_script: >
+    [Free-text script in the agent's voice. Example: "Here's how I get paid
+    when you're buying. As of August 2024, the seller is no longer required
+    to offer to pay my commission out of the sale price. So we agree on it
+    up front — right here in our buyer agreement — and then when we write an
+    offer, I ask the seller to cover all or part of it. If they won't, we
+    talk about options: you can cover the rest, we can factor it into the
+    offer price, or we walk. Nothing here is set by law or MLS, it's all
+    negotiable, and I'll walk you through it whenever we write an offer."]
+
   rebate_policy: >
     [Optional: describe any buyer rebate policy. Leave blank or set to null
     if agent does not offer rebates.]

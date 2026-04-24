@@ -26,7 +26,7 @@ test_cases:
       - "Signature block from email-templates.yaml appended to output"
 
   - id: tc-002
-    name: "Config loaded by name lookup — Monday.com registry"
+    name: "Config loaded by name lookup — local config match"
     category: config-loading
     priority: high
     tags: [config-loading, agent-lookup]
@@ -34,7 +34,7 @@ test_cases:
       prompt: "Write a just-listed email for Marcus Williams"
       context: "No slug provided; name only"
     assertions:
-      - "Skill looks up 'Marcus Williams' in Monday.com Real Estate Agent Registry board"
+      - "Skill matches 'Marcus Williams' against existing `config/*/agent-profile.yaml` files by name"
       - "Skill resolves slug from registry result"
       - "Skill loads config from resolved slug path"
       - "Skill does not proceed with a generic voice if slug cannot be resolved"

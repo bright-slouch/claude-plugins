@@ -36,7 +36,7 @@ skills:
 The Orchestrator is the command center for the Central Indiana Real Estate Agent Plugin. It coordinates all 18 skills (plus `re-agent-setup` for onboarding), identifies which agent is active, assesses current transaction state, and routes to the right skill or guided workflow.
 
 **Key capabilities:**
-- Agent identification via Monday.com registry (resolves name/email/slug to config folder)
+- Agent identification via local slug resolution — takes a slug, full name, or email and resolves to `config/[slug]/`
 - Transaction state assessment — picks up any deal in progress and recommends next steps
 - Permission-based skill invocation — always confirms before running a skill that creates content
 - Context-aware routing — maps natural language descriptions to the right skill
@@ -55,11 +55,15 @@ On every new session, confirm which agent is active before doing anything else.
 - Email: `"jsmith@fctucker.com"`
 - Config slug: `"jane-smith-fc-tucker"`
 
-**Resolution process:**
-1. Look up Monday.com **"Real Estate Agent Registry"** board using the provided identifier (search Name, Email, or Slug columns)
-2. Retrieve the `Slug` value
+**Resolution process (slug-based, entirely local):**
+1. If the user provided a slug directly, use it.
+2. If the user provided a name or email, match against existing configs:
+   - Glob `~/Skills/real-estate-plugin/config/*/agent-profile.yaml`
+   - Grep each file for the name (under `name.full`) or email (under `contact.email_primary`)
+   - If exactly one matches, use that slug
 3. Load `~/Skills/real-estate-plugin/config/[slug]/agent-profile.yaml` to confirm identity
 4. Load additional config files as needed for the session's tasks
+5. On read, transparently remap legacy field names: `farm_areas` → `primary_focus_areas`, `secondary_areas` → `secondary_coverage_areas`. Log a one-line notice if remapping occurred.
 
 **After loading, display:**
 ```
@@ -69,27 +73,41 @@ License: [License #] | MLS ID: [MLS ID]
 Primary markets: [from market-areas.yaml]
 ```
 
-**If not found in Monday.com:**
+**If no agent identifier was provided (first session / new install):**
 ```
-I couldn't find "[identifier]" in the Real Estate Agent Registry.
+Welcome to the Central Indiana Real Estate Agent Plugin! 🏡
+
+This plugin gives you 18 AI-powered skills covering every phase of
+your real estate business — from listing appointments to closing day.
+
+To get started, say: "Set up my agent profile"
+(or run /re-setup)
+
+This one-time setup takes about 10 minutes and creates your
+personalized config — voice, branding, vendors, market areas, and more.
+Every skill in the plugin uses this config to produce output that
+sounds like you and matches your business.
+```
+
+**If identifier was provided but no matching config folder was found:**
+```
+I couldn't find a config matching "[identifier]".
 
 Options:
-1. Search by email address instead
-2. Search by config slug directly if you know it
+1. Try your email address instead
+2. Try your config slug directly if you know it (it's the folder name under `config/`)
 3. Run /re-agent-setup to create this agent's profile
 ```
 
 **If config files are incomplete:**
 ```
-Found [Agent Name] in the registry, but these config files are missing:
+Found [Agent Name] at `config/[slug]/`, but these config files are missing:
 - [missing files]
 
 Options:
 1. Run re-agent-setup to fill in the missing sections
 2. Proceed without those sections (I'll ask for info as needed)
 ```
-
-**If slug provided directly:** Skip the Monday.com lookup and load config files directly from `config/[slug]/`.
 
 ---
 
@@ -172,7 +190,7 @@ Proceed?
 ```
 
 **No permission needed for:**
-- Looking up agent config or Monday.com registry
+- Looking up agent config locally under `config/`
 - Displaying status summaries or transaction state
 - Answering questions about what a skill does
 - Recommending the next step
@@ -444,7 +462,7 @@ Every skill automatically receives from the active agent config:
 - Agent name, brokerage, license, tone/voice settings (`agent-profile.yaml`)
 - Brand colors, tagline, hashtags, signature, disclaimers (`brand-kit.yaml`)
 - Preferred vendors (lenders, inspectors, title, contractors) (`vendor-network.yaml`)
-- Primary service areas and farm counties (`market-areas.yaml`)
+- Primary service areas, primary focus areas, and secondary coverage areas (`market-areas.yaml`)
 - Email signature and per-milestone templates (`email-templates.yaml`)
 - Team members and routing contacts (`team-structure.yaml`)
 
@@ -489,19 +507,19 @@ To assess where we are on [property address], tell me:
 
 ## Error Handling
 
-### Agent not found in Monday.com
+### Agent not found (no matching config folder)
 ```
-I couldn't find "[identifier]" in the Real Estate Agent Registry.
+I couldn't find a config matching "[identifier]".
 
 Let's try:
 1. Search by email address instead
-2. Search by config slug (e.g., "jane-smith-fc-tucker")
+2. Use your config slug directly (the folder name under `config/`, e.g., "jane-smith-fc-tucker")
 3. Run /re-agent-setup to create this agent's profile
 ```
 
 ### Config files missing or incomplete
 ```
-Found [Agent Name] in the registry, but these config files are missing or empty:
+Found [Agent Name] at `config/[slug]/`, but these config files are missing or empty:
 [list each missing file]
 
 Options:

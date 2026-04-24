@@ -127,10 +127,10 @@ test_cases:
     assertions:
       - vendor_network_contains_todo_comments: true
       - config_still_created_despite_incomplete_sections: true
-      - monday_config_status_set_to_partial: true
+      - config_folder_contains_todo_comments: true
 
   - id: setup_009
-    name: "Monday.com registry row created"
+    name: "Agent config folder created"
     category: config-generation
     priority: critical
     tags: [integration, output-structure]
@@ -139,11 +139,11 @@ test_cases:
       agent_name: "Lisa Morales"
       brokerage: "F.C. Tucker"
     assertions:
-      - monday_row_created_in_registry_board: true
-      - monday_row_contains_name: "Lisa Morales"
-      - monday_row_contains_brokerage: "F.C. Tucker"
-      - monday_row_contains_slug: true
-      - monday_config_status_set_correctly: true
+      - config_folder_created_at_slug_path: true
+      - agent_profile_yaml_name_full: "Lisa Morales"
+      - agent_profile_yaml_brokerage_name: "F.C. Tucker"
+      - config_folder_name_matches_slug: true
+      - all_seven_yaml_files_written: true
 
   # =============================================================================
   # VOICE AND TONE — Correct mapping of agent communication style
@@ -242,7 +242,7 @@ test_cases:
       - new_slug_generated: "david-park-c21-scheetz"
       - skill_confirms_new_slug_with_agent: true
       - all_config_files_updated_with_new_brokerage: true
-      - monday_row_updated: true
+      - config_files_updated_in_place: true
 
   - id: setup_017
     name: "Team member added to solo agent config"

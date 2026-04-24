@@ -59,8 +59,6 @@ git clone <repo-url> ~/Skills/real-estate-plugin
    ```
    Or start the orchestrator and describe what you need in plain language.
 
-3. **(Optional) Connect Monday.com** — if you manage multiple agents or want a centralized registry, set up the "Real Estate Agent Registry" board in Monday.com and add your `MONDAY_API_KEY` to `~/.zshrc`.
-
 ---
 
 ## Quick Start
@@ -145,7 +143,7 @@ Each agent has a config folder at `config/[agent-slug]/` containing up to 7 YAML
 | `brand-kit.yaml` | Colors, fonts, logo paths, tagline, hashtags, compliance disclaimers |
 | `vendor-network.yaml` | Preferred lenders, title companies, inspectors, photographers, contractors |
 | `fee-structure.yaml` | Commission rates, buyer agreement terms (sensitive — not shared with clients) |
-| `market-areas.yaml` | Counties, cities, neighborhoods, school districts, farm areas |
+| `market-areas.yaml` | Counties, cities, neighborhoods, school districts, primary focus areas, secondary coverage areas |
 | `email-templates.yaml` | Signature block, per-milestone email templates |
 | `team-structure.yaml` | Team members, roles, TC, showing assistant |
 

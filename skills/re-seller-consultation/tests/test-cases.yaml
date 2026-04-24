@@ -34,9 +34,9 @@
   tags: [config, monday-lookup, agent-identity]
   input:
     prompt: "It's Sarah Johnson from Century 21 — help me prep for a seller consultation"
-    context: "Agent did not provide a slug. Monday.com registry has a row for 'Sarah Johnson' with slug 'sarah-johnson-c21-scheetz'."
+    context: "Agent did not provide a slug. A config folder exists at `config/sarah-johnson-c21-scheetz/` with `name.full: 'Sarah Johnson'` in agent-profile.yaml."
   assertions:
-    - "Skill asks for or looks up agent's slug via Monday.com Real Estate Agent Registry"
+    - "Skill asks for the agent's slug (or matches name/email against existing `config/*/agent-profile.yaml` files)"
     - "Once slug is resolved, output uses Sarah Johnson's name and Century 21 Scheetz branding"
     - "Skill does not proceed with generic placeholder output before identifying the agent"
 

@@ -36,16 +36,19 @@ Templates for all 7 files are in `~/Skills/real-estate-plugin/config/_template/`
 
 ### Agent Identification Pattern
 
-**Step 1: Look up the Monday.com "Real Estate Agent Registry" board.**
+Agent identity is **entirely slug-based** (as of v0.6.0). There is no external registry. The slug is the kebab-case folder name under `config/` (e.g., `jane-smith-fc-tucker`).
 
-The board is the authoritative index. Look up agents by:
-- Full name (`Name` column)
-- Email (`Email` column)
-- Slug (`Slug` column — kebab-case folder name)
+**Resolution order for every skill:**
 
-This returns the `Slug` (e.g., `jane-smith-fc-tucker`).
+1. If the user provided a slug explicitly (e.g., `jane-smith-fc-tucker`), use it directly.
+2. If a prior turn in this session already resolved a slug, reuse it.
+3. If the user provided a name or email, list the existing `config/*/` folders and try to match by:
+   - Kebab-casing the name and checking for an exact folder match.
+   - Reading the `name.full` field in each `agent-profile.yaml` and fuzzy-matching.
+   - Reading the `contact.email_primary` field in each `agent-profile.yaml` for email lookup.
+4. If no match, direct the user to `/re-agent-setup` to create their config.
 
-**Step 2: Load config files from `config/[slug]/`.**
+**Once the slug is resolved, load config files from `config/[slug]/`:**
 
 ```
 config/jane-smith-fc-tucker/
@@ -58,28 +61,10 @@ config/jane-smith-fc-tucker/
 └── team-structure.yaml   # Load when routing to team members
 ```
 
+**Legacy field migration (v0.6.0):**
+- When reading `market-areas.yaml`, if you encounter `farm_areas:`, treat it as `primary_focus_areas:`. If you encounter `secondary_areas:`, treat it as `secondary_coverage_areas:`. When next editing the file, rename the keys in-place and mention the upgrade to the user in one line.
+
 **If agent not found:** Ask the user to run `/re-agent-setup` to create the agent config.
-
-**If slug provided directly:** Skip the Monday.com lookup and load config files directly.
-
-### Monday.com Agent Registry Board Schema
-
-**Board name:** "Real Estate Agent Registry"
-
-| Column | Type | Purpose |
-|---|---|---|
-| Name | text | Agent full name |
-| Slug | text | kebab-case config folder name (e.g., `jane-smith-fc-tucker`) |
-| Brokerage | text | Brokerage name |
-| Phone | phone | Agent phone number |
-| Email | email | Agent email address |
-| License # | text | Indiana real estate license number |
-| MLS ID | text | MIBOR BLC member ID |
-| Config Status | status | "Setup Complete" / "Partial" / "Not Started" |
-| Google Drive | link | Agent's Google Drive folder for transaction docs |
-| Last Active | date | Last date plugin was used for this agent |
-
-`re-agent-setup` creates the Monday.com row and local config files. All other skills read from this board.
 
 ---
 
@@ -100,8 +85,9 @@ Shared Indiana-specific legal, market, and practice references live in:
 | `buyer-agreement-requirements.md` | Post-July 2024 written buyer agreement requirements |
 | `real-estate-vocabulary.md` | Approved terminology, fair housing language, Indiana terms |
 | `transaction-timeline-template.md` | Standard 30-45 day close timeline, common delays |
+| `voice-enforcement.md` | Hard constraints every content skill must honor from `voice` config — emoji/exclamation rules, greeting/signoff verbatim, brokerage agnosticism, never-guess identity fields |
 
-All skills should reference these files for Indiana-specific content rather than inventing general guidance.
+All skills should reference these files for Indiana-specific content rather than inventing general guidance. Any skill that generates client-facing content must point readers to `voice-enforcement.md` and implement the enforcement loop described there.
 
 ---
 
@@ -130,7 +116,7 @@ Presentation and document templates live in:
 ### Foundation
 | Skill | Description |
 |---|---|
-| `re-agent-setup` | Onboard a new agent — creates Monday.com registry entry and all 7 config files. Alias: `/re-setup` |
+| `re-agent-setup` | Onboard a new agent — creates all 7 local YAML config files at `config/[slug]/`. Alias: `/re-setup` |
 
 ### Core (Phase 1)
 | Skill | Description |
@@ -222,7 +208,7 @@ real-estate-plugin/
 
 ## Skill Development Conventions
 
-- **Step 1 of every skill:** "Load Agent Config" — read `agent-profile.yaml` + any other needed configs. If not found, direct to `re-agent-setup`.
+- **Step 1 of every skill:** "Load Agent Config" — read `agent-profile.yaml` + any other needed configs. If not found, direct to `re-agent-setup`. On read, transparently remap legacy field names (`farm_areas` → `primary_focus_areas`, `secondary_areas` → `secondary_coverage_areas`) and log a one-line notice to the user.
 - **SKILL.md line limit:** 500 lines maximum. Extract heavy content to each skill's own `references/` subdirectory and link.
 - **Skill location:** All skills live in `skills/[skill-name]/SKILL.md`
 - **Command location:** All slash commands live in `commands/[skill-name].md`
@@ -230,6 +216,9 @@ real-estate-plugin/
 - **Reference paths:** Always use `~/Skills/real-estate-plugin/references/[file].md`
 - **Template paths:** Always use `~/Skills/real-estate-plugin/templates/[file].md`
 - **Branding:** All output must use the agent's name, tagline, colors, and signature from config — never generic placeholders.
+- **Brokerage agnosticism:** No skill may hardcode brokerage-specific rules, colors, fonts, slogans, or copy (@properties, KW, Compass, F.C. Tucker, C21, etc.). Brand values come exclusively from `brand-kit.yaml`. Training-knowledge pre-fills based on brokerage recognition are bugs.
+- **Voice enforcement:** Any skill that generates client-facing or user-facing content must load `voice` from `agent-profile.yaml` and treat its fields as hard constraints. See `references/voice-enforcement.md` for the full contract (emoji/exclamation rules, greeting/sign-off verbatim, writing-sample anchor). Run a voice consistency check before shipping output; regenerate if any check fails.
+- **Never-guess identity fields:** `name.pronouns`, `name.preferred`, and `contact.preferred_contact_method` are ask-only. Never infer them from other data. Blank / TODO is always better than a guess.
 - **Fair housing:** All content must comply with federal Fair Housing Act and HUD language guidelines. See `references/real-estate-vocabulary.md`.
 
 ---

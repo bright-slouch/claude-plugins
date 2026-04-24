@@ -71,7 +71,7 @@ If the agent config is not found after trying all resolution methods above, you 
 > I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
 >
 > Please provide one of the following:
-> - Your **full name** as registered in the Agent Registry
+> - Your **full name** as it appears in your agent profile
 > - Your **email address**
 > - Your **config slug** (e.g., `jane-smith-fc-tucker`)
 >

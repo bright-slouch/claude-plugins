@@ -90,7 +90,7 @@ Load the following config files before doing anything else:
 > I'd be happy to help with that! Before I can run this skill, I need to load your agent profile.
 >
 > Please provide one of the following:
-> - Your **full name** as registered in the Agent Registry
+> - Your **full name** as it appears in your agent profile
 > - Your **email address**
 > - Your **config slug** (e.g., `jane-smith-fc-tucker`)
 >
@@ -98,7 +98,7 @@ Load the following config files before doing anything else:
 
 Then STOP and wait for the user to respond. Do not proceed to subsequent steps.
 
-**If slug is provided directly:** skip Monday.com lookup and load config files directly.
+**If slug is provided directly:** load config files directly from `config/[slug]/`.
 
 ---
 

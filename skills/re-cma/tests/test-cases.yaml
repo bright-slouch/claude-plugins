@@ -61,7 +61,7 @@ tests:
       context: "No agent slug or name provided"
     assertions:
       - "Skill asks for agent slug or name before proceeding"
-      - "Skill explains how to find the slug (Monday.com registry lookup)"
+      - "Skill explains how to find the slug (look for the folder name under `config/` or ask the agent)"
       - "Skill does not generate a partial CMA with generic branding"
 
   # -----------------------------------------------------------------------
